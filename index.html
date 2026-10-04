@@ -1,1902 +1,245 @@
 <!DOCTYPE html>
-<html lang="en" class="scroll-smooth">
+<html lang="en">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>APPLIFEST 2026 | Parul University - Faculty of IT & Computer Science</title>
-  
-  <link rel="preconnect" href="https://fonts.googleapis.com">
-  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&family=Space+Grotesk:wght@500;700&display=swap" rel="stylesheet">
-  
-  <!-- Font Awesome CDN -->
-  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
-  
-  <!-- Tailwind CSS -->
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Delegate Pass Verification | INNOVATION FEST 2.0</title>
+  <!-- Tailwind CSS CDN -->
   <script src="https://cdn.tailwindcss.com"></script>
-  <script>
-    tailwind.config = {
-      darkMode: 'class',
-      theme: {
-        extend: {
-          fontFamily: {
-            sans: ['"Plus Jakarta Sans"', 'sans-serif'],
-            display: ['"Space Grotesk"', 'sans-serif'],
-          },
-          colors: {
-            brand: {
-              dark: '#070b14',
-              surface: '#0f172a',
-              card: '#131e36',
-              cyan: '#06b6d4',
-              violet: '#8b5cf6',
-              purple: '#6366f1',
-              amber: '#f59e0b',
-              crimson: '#ef4444'
-            }
-          },
-          animation: {
-            'glow-pulse': 'glowPulse 4s ease-in-out infinite alternate',
-            'float': 'floating 3s ease-in-out infinite alternate',
-          },
-          keyframes: {
-            glowPulse: {
-              '0%': { opacity: '0.3', transform: 'scale(1)' },
-              '100%': { opacity: '0.7', transform: 'scale(1.08)' }
-            },
-            floating: {
-              '0%': { transform: 'translateY(0px)' },
-              '100%': { transform: 'translateY(-10px)' }
-            }
-          }
-        }
-      }
-    }
-  </script>
-
+  <!-- QRCode.js CDN -->
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/qrcodejs/1.0.0/qrcode.min.js"></script>
+  <!-- Inter font -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
   <style>
-    .glassmorphism {
-      background: rgba(15, 23, 42, 0.75);
-      backdrop-filter: blur(14px);
-      -webkit-backdrop-filter: blur(14px);
-      border: 1px solid rgba(255, 255, 255, 0.08);
+    body {
+      font-family: 'Plus Jakarta Sans', sans-serif;
+      background-color: #050a14;
     }
-    .glass-card {
-      background: rgba(19, 30, 54, 0.7);
-      backdrop-filter: blur(10px);
-      border: 1px solid rgba(255, 255, 255, 0.07);
+    .badge-card {
+      background: linear-gradient(180deg, #0e1e38 0%, #0a1426 100%);
+      border: 1.5px solid #14355a;
     }
-    .glass-card:hover {
-      border-color: rgba(6, 182, 212, 0.35);
+    .badge-inner {
+      background: radial-gradient(circle at top, #0f2b4c 0%, #081628 100%);
+      border: 1px solid #1a4975;
     }
-    .text-gradient {
-      background: linear-gradient(135deg, #38bdf8 0%, #818cf8 50%, #c084fc 100%);
-      -webkit-background-clip: text;
-      -webkit-text-fill-color: transparent;
-    }
-    .text-gold-gradient {
-      background: linear-gradient(135deg, #fbbf24 0%, #f59e0b 50%, #d97706 100%);
-      -webkit-background-clip: text;
-      -webkit-text-fill-color: transparent;
-    }
-    .mesh-bg {
-      background-image: 
-        radial-gradient(at 0% 0%, rgba(99, 102, 241, 0.15) 0px, transparent 50%),
-        radial-gradient(at 100% 0%, rgba(6, 182, 212, 0.15) 0px, transparent 50%),
-        radial-gradient(at 50% 50%, rgba(139, 92, 246, 0.1) 0px, transparent 50%),
-        radial-gradient(at 100% 100%, rgba(244, 63, 94, 0.1) 0px, transparent 50%);
-    }
-    /* Custom Scrollbar */
-    ::-webkit-scrollbar {
-      width: 8px;
-    }
-    ::-webkit-scrollbar-track {
-      background: #070b14;
-    }
-    ::-webkit-scrollbar-thumb {
-      background: #1e293b;
-      border-radius: 4px;
-    }
-    ::-webkit-scrollbar-thumb:hover {
-      background: #334155;
+    @media print {
+      body * {
+        visibility: hidden;
+      }
+      #passContainer, #passContainer * {
+        visibility: visible;
+      }
+      #passContainer {
+        position: absolute;
+        left: 0;
+        top: 0;
+        width: 100%;
+        background: transparent;
+      }
+      .no-print {
+        display: none !important;
+      }
     }
   </style>
 </head>
-<body class="bg-[#070b14] text-slate-100 font-sans selection:bg-cyan-500 selection:text-white relative overflow-x-hidden min-h-screen">
+<body class="text-white min-h-screen flex items-center justify-center p-4">
 
-  <!-- Ambient background glow elements -->
-  <div class="fixed inset-0 overflow-hidden pointer-events-none z-0">
-    <div class="absolute -top-40 -left-40 w-96 h-96 bg-cyan-500/15 rounded-full blur-3xl animate-glow-pulse"></div>
-    <div class="absolute top-1/3 -right-40 w-[30rem] h-[30rem] bg-violet-600/15 rounded-full blur-3xl animate-glow-pulse" style="animation-delay: 2s;"></div>
-    <div class="absolute bottom-10 left-1/4 w-[28rem] h-[28rem] bg-indigo-500/10 rounded-full blur-3xl"></div>
-  </div>
+  <!-- Main Container -->
+  <div class="w-full max-w-md mx-auto">
 
-  <header class="sticky top-0 z-40 w-full glassmorphism border-b border-slate-800/80 transition-all duration-300">
-    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 h-20 flex items-center justify-between">
-      <!-- University & Event Logo -->
-      <a href="#" class="flex items-center space-x-3 group">
-        <div class="w-11 h-11 rounded-xl bg-gradient-to-tr from-cyan-500 to-indigo-600 flex items-center justify-center text-white shadow-lg shadow-cyan-500/20 group-hover:scale-105 transition-transform">
-          <i class="fa-solid fa-laptop-code text-xl"></i>
-        </div>
+    <!-- Search / Verification Form View -->
+    <div id="searchView" class="badge-card rounded-3xl p-6 sm:p-8 shadow-2xl">
+      <div class="text-center mb-6">
+        <span class="text-xs uppercase tracking-widest text-cyan-400 font-bold">Parul University (NAAC A++)</span>
+        <h1 class="text-2xl font-extrabold mt-1 text-white">INNOVATION FEST 2.0</h1>
+        <p class="text-xs text-slate-400 mt-1">Download your official delegate credential pass</p>
+      </div>
+
+      <form id="verifyForm" class="space-y-4">
         <div>
-          <div class="flex items-center space-x-2">
-            <span class="font-display font-extrabold text-xl tracking-tight text-white">APPLIFEST</span>
-            <span class="px-1.5 py-0.5 text-[10px] font-bold tracking-widest bg-cyan-500/20 text-cyan-400 border border-cyan-500/40 rounded">2026</span>
-          </div>
-          <p class="text-[11px] text-slate-400 font-medium tracking-wide">Parul University • Faculty of IT & CS</p>
+          <label class="block text-xs uppercase tracking-wider text-slate-300 font-semibold mb-2">Enrollment No / Mobile / Email</label>
+          <input 
+            type="text" 
+            id="queryInput" 
+            required 
+            placeholder="e.g. 2405101270098 or 98793..." 
+            class="w-full bg-[#081528] border border-[#1a4470] rounded-xl px-4 py-3 text-sm text-white placeholder-slate-500 focus:outline-none focus:border-cyan-400 transition"
+          />
         </div>
-      </a>
 
-      <!-- Desktop Navigation Menu -->
-      <nav class="hidden md:flex items-center space-x-7 text-sm font-medium text-slate-300">
-        <a href="#about" class="hover:text-cyan-400 transition-colors">About</a>
-        <a href="#events" class="hover:text-cyan-400 transition-colors">Events & Rules</a>
-        <a href="#schedule" class="hover:text-cyan-400 transition-colors">Schedule</a>
-        <a href="#guidelines" class="hover:text-cyan-400 transition-colors">Guidelines</a>
-        <a href="#committee" class="hover:text-cyan-400 transition-colors">Committee</a>
-        <a href="#contact" class="hover:text-cyan-400 transition-colors">Helpdesk</a>
-      </nav>
-
-      <!-- Action Buttons -->
-      <div class="hidden sm:flex items-center space-x-3">
-        <button onclick="openRegistrationModal()" class="relative inline-flex items-center justify-center p-0.5 overflow-hidden text-sm font-semibold rounded-xl group bg-gradient-to-br from-cyan-500 via-indigo-500 to-violet-500 hover:text-white shadow-lg shadow-indigo-500/25 active:scale-95 transition-transform">
-          <span class="relative px-5 py-2.5 transition-all ease-in duration-150 bg-[#070b14] rounded-[10px] group-hover:bg-opacity-0 flex items-center space-x-2">
-            <span>Register Now</span>
-            <i class="fa-solid fa-arrow-right text-xs group-hover:translate-x-1 transition-transform"></i>
-          </span>
+        <button 
+          type="submit" 
+          id="submitBtn" 
+          class="w-full bg-cyan-500 hover:bg-cyan-400 text-slate-950 font-bold py-3.5 px-4 rounded-xl transition duration-200 shadow-lg shadow-cyan-500/20 text-sm flex items-center justify-center gap-2"
+        >
+          <span>Verify & Get Pass</span>
         </button>
-      </div>
+      </form>
 
-      <!-- Mobile Menu Toggle Button -->
-      <button id="mobileMenuBtn" class="md:hidden p-2 text-slate-400 hover:text-white focus:outline-none">
-        <i id="menuIcon" class="fa-solid fa-bars text-xl"></i>
-      </button>
+      <div id="errorBox" class="mt-4 p-3 bg-red-950/60 border border-red-500/40 rounded-xl text-red-300 text-xs text-center hidden"></div>
     </div>
 
-    <!-- Mobile Dropdown Navigation -->
-    <div id="mobileMenu" class="hidden md:hidden glassmorphism border-b border-slate-800 px-5 pt-3 pb-6 space-y-3">
-      <a href="#about" onclick="toggleMobileMenu()" class="block py-2 text-slate-300 hover:text-cyan-400 font-medium">About Festival</a>
-      <a href="#events" onclick="toggleMobileMenu()" class="block py-2 text-slate-300 hover:text-cyan-400 font-medium">Competitions (8 Events + Gaming)</a>
-      <a href="#schedule" onclick="toggleMobileMenu()" class="block py-2 text-slate-300 hover:text-cyan-400 font-medium">Event Schedule</a>
-      <a href="#guidelines" onclick="toggleMobileMenu()" class="block py-2 text-slate-300 hover:text-cyan-400 font-medium">Rules & Guidelines</a>
-      <a href="#committee" onclick="toggleMobileMenu()" class="block py-2 text-slate-300 hover:text-cyan-400 font-medium">Organizing Committee</a>
-      <a href="#contact" onclick="toggleMobileMenu()" class="block py-2 text-slate-300 hover:text-cyan-400 font-medium">Helpline & FAQ</a>
-      <div class="pt-2">
-        <button onclick="openRegistrationModal(); toggleMobileMenu();" class="w-full py-3 bg-gradient-to-r from-cyan-500 to-indigo-600 font-bold rounded-xl text-center shadow-lg shadow-cyan-500/20 text-white">
-          Register Online Now
-        </button>
-      </div>
-    </div>
-  </header>
-
-  <main class="relative z-10">
-    <section class="relative pt-12 pb-20 md:pt-20 md:pb-28 overflow-hidden mesh-bg">
-      <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+    <!-- Pass Generated View (Matches screenshot) -->
+    <div id="passView" class="hidden">
+      <div class="badge-card rounded-3xl p-6 shadow-2xl relative">
         
-        <!-- Top Institutional Badges -->
-        <div class="flex flex-wrap items-center justify-center gap-3 sm:gap-4 mb-6">
-          <span class="inline-flex items-center space-x-2 px-3.5 py-1.5 rounded-full text-xs font-semibold bg-red-500/10 text-rose-400 border border-rose-500/30 shadow-sm">
-            <span class="w-2 h-2 rounded-full bg-rose-500 animate-ping"></span>
-            <span>NAAC A++ ACCREDITED UNIVERSITY</span>
-          </span>
-          <span class="inline-flex items-center space-x-2 px-3.5 py-1.5 rounded-full text-xs font-semibold bg-indigo-500/10 text-indigo-300 border border-indigo-500/30">
-            <i class="fa-solid fa-graduation-cap text-indigo-400"></i>
-            <span>Faculty of IT & Computer Science</span>
-          </span>
-          <span class="inline-flex items-center space-x-1.5 px-3 py-1.5 rounded-full text-xs font-semibold bg-emerald-500/10 text-emerald-400 border border-emerald-500/30">
-            <i class="fa-solid fa-calendar-check text-xs"></i>
-            <span>Annual Mega Flagship Event</span>
-          </span>
+        <!-- Header status -->
+        <div class="text-center mb-5">
+          <div class="w-12 h-12 bg-emerald-500/20 text-emerald-400 rounded-full flex items-center justify-center mx-auto mb-2 border border-emerald-500/40">
+            <svg class="w-6 h-6 stroke-current" fill="none" stroke-width="2.5" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" d="M4.5 12.75l6 6 9-13.5"></path>
+            </svg>
+          </div>
+          <h2 class="text-xl font-bold text-white tracking-tight">Registration Verified!</h2>
+          <p class="text-xs text-slate-400 mt-0.5">Save or screenshot this official delegate credential pass.</p>
         </div>
 
-        <!-- Main Banner Content -->
-        <div class="text-center max-w-4xl mx-auto">
-          <h2 class="text-xs sm:text-sm font-bold uppercase tracking-widest text-cyan-400 mb-2">
-            Ideas Today • Solutions Tomorrow
-          </h2>
-          <h1 class="text-4xl sm:text-6xl lg:text-7xl font-display font-extrabold tracking-tight text-white mb-6">
-            APPLIFEST <span class="text-gradient">2026</span>
-          </h1>
-          <p class="text-lg sm:text-xl text-slate-300 font-medium max-w-3xl mx-auto leading-relaxed mb-8">
-            The crucible of innovation where tomorrow's tech leaders convene. Compete, build, design, collaborate, and win across software, UI/UX, cybersecurity, AI, and e-sports tournaments.
-          </p>
-
-          <!-- Core Event Meta Badges -->
-          <div class="grid grid-cols-2 sm:grid-cols-4 gap-3 sm:gap-4 max-w-3xl mx-auto mb-10 text-left">
-            <div class="glass-card p-3.5 rounded-2xl border border-slate-700/60 flex items-center space-x-3">
-              <div class="w-10 h-10 rounded-xl bg-cyan-500/20 flex items-center justify-center text-cyan-400 shrink-0">
-                <i class="fa-regular fa-calendar text-lg"></i>
-              </div>
-              <div>
-                <span class="text-[11px] uppercase tracking-wider text-slate-400 block font-medium">Event Date</span>
-                <span class="text-sm font-bold text-white">5th Oct 2026</span>
-              </div>
-            </div>
-
-            <div class="glass-card p-3.5 rounded-2xl border border-slate-700/60 flex items-center space-x-3">
-              <div class="w-10 h-10 rounded-xl bg-rose-500/20 flex items-center justify-center text-rose-400 shrink-0">
-                <i class="fa-solid fa-hourglass-end text-lg"></i>
-              </div>
-              <div>
-                <span class="text-[11px] uppercase tracking-wider text-slate-400 block font-medium">Deadline</span>
-                <span class="text-sm font-bold text-rose-300">2nd Oct 2026</span>
-              </div>
-            </div>
-
-            <div class="glass-card p-3.5 rounded-2xl border border-slate-700/60 flex items-center space-x-3">
-              <div class="w-10 h-10 rounded-xl bg-violet-500/20 flex items-center justify-center text-violet-400 shrink-0">
-                <i class="fa-solid fa-location-dot text-lg"></i>
-              </div>
-              <div>
-                <span class="text-[11px] uppercase tracking-wider text-slate-400 block font-medium">Campus</span>
-                <span class="text-sm font-bold text-white">Parul Univ, Vadodara</span>
-              </div>
-            </div>
-
-            <div class="glass-card p-3.5 rounded-2xl border border-slate-700/60 flex items-center space-x-3">
-              <div class="w-10 h-10 rounded-xl bg-amber-500/20 flex items-center justify-center text-amber-400 shrink-0">
-                <i class="fa-solid fa-indian-rupee-sign text-lg"></i>
-              </div>
-              <div>
-                <span class="text-[11px] uppercase tracking-wider text-slate-400 block font-medium">Fee</span>
-                <span class="text-sm font-bold text-amber-300">₹250 (PU) / ₹300</span>
-              </div>
-            </div>
-          </div>
-
-          <!-- Hero Action Buttons -->
-          <div class="flex flex-col sm:flex-row items-center justify-center gap-4 mb-14">
-            <button onclick="openRegistrationModal()" class="w-full sm:w-auto px-8 py-4 bg-gradient-to-r from-cyan-500 via-indigo-600 to-violet-600 text-white font-bold rounded-2xl shadow-xl shadow-cyan-500/25 hover:shadow-cyan-500/40 hover:scale-[1.02] active:scale-95 transition-all flex items-center justify-center space-x-3">
-              <i class="fa-solid fa-bolt text-amber-300"></i>
-              <span>Secure Your Registration</span>
-            </button>
-            <a href="#events" class="w-full sm:w-auto px-8 py-4 rounded-2xl glassmorphism font-semibold text-slate-200 hover:text-white hover:bg-slate-800/80 transition-all flex items-center justify-center space-x-2 border border-slate-700/80">
-              <i class="fa-solid fa-trophy text-cyan-400"></i>
-              <span>Explore 8 Competitions</span>
-            </a>
-          </div>
-
-          <div class="glass-card max-w-2xl mx-auto rounded-3xl p-5 border border-slate-700/70 shadow-2xl">
-            <div class="text-xs uppercase tracking-widest text-slate-400 font-bold mb-3 flex items-center justify-center space-x-2">
-              <i class="fa-regular fa-clock text-cyan-400 animate-spin" style="animation-duration: 6s;"></i>
-              <span>Hurry! Registration Closes October 2, 2026</span>
-            </div>
-            <div class="grid grid-cols-4 gap-3 text-center" id="countdownGrid">
-              <div class="bg-slate-900/80 border border-slate-800 rounded-2xl p-3">
-                <span id="daysCount" class="block text-2xl sm:text-4xl font-display font-black text-cyan-400">00</span>
-                <span class="text-[11px] font-semibold text-slate-400 uppercase tracking-wider">Days</span>
-              </div>
-              <div class="bg-slate-900/80 border border-slate-800 rounded-2xl p-3">
-                <span id="hoursCount" class="block text-2xl sm:text-4xl font-display font-black text-indigo-400">00</span>
-                <span class="text-[11px] font-semibold text-slate-400 uppercase tracking-wider">Hours</span>
-              </div>
-              <div class="bg-slate-900/80 border border-slate-800 rounded-2xl p-3">
-                <span id="minutesCount" class="block text-2xl sm:text-4xl font-display font-black text-violet-400">00</span>
-                <span class="text-[11px] font-semibold text-slate-400 uppercase tracking-wider">Mins</span>
-              </div>
-              <div class="bg-slate-900/80 border border-slate-800 rounded-2xl p-3">
-                <span id="secondsCount" class="block text-2xl sm:text-4xl font-display font-black text-pink-400">00</span>
-                <span class="text-[11px] font-semibold text-slate-400 uppercase tracking-wider">Secs</span>
-              </div>
-            </div>
-          </div>
-
-        </div>
-
-      </div>
-    </section>
-
-    <section class="py-6 border-y border-slate-800/80 bg-slate-950/60">
-      <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-        <div class="grid grid-cols-2 md:grid-cols-4 gap-4 text-center">
-          <div class="p-4 rounded-xl hover:bg-slate-900/50 transition-colors">
-            <div class="text-cyan-400 font-display font-extrabold text-2xl mb-1">INNOVATE</div>
-            <p class="text-xs text-slate-400">Fresh Ideas, Bolder Starts</p>
-          </div>
-          <div class="p-4 rounded-xl hover:bg-slate-900/50 transition-colors">
-            <div class="text-indigo-400 font-display font-extrabold text-2xl mb-1">COLLABORATE</div>
-            <p class="text-xs text-slate-400">Network & Build With Peers</p>
-          </div>
-          <div class="p-4 rounded-xl hover:bg-slate-900/50 transition-colors">
-            <div class="text-violet-400 font-display font-extrabold text-2xl mb-1">COMPETE</div>
-            <p class="text-xs text-slate-400">High-Stakes Live Arena</p>
-          </div>
-          <div class="p-4 rounded-xl hover:bg-slate-900/50 transition-colors">
-            <div class="text-pink-400 font-display font-extrabold text-2xl mb-1">GROW</div>
-            <p class="text-xs text-slate-400">Certificates & Recognition</p>
-          </div>
-        </div>
-      </div>
-    </section>
-
-    <section id="about" class="py-20 relative">
-      <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-        <div class="grid grid-cols-1 lg:grid-cols-12 gap-12 items-center">
+        <!-- Credential Badge Card -->
+        <div id="passContainer" class="badge-inner rounded-2xl p-5 border border-cyan-500/30 relative overflow-hidden">
           
-          <div class="lg:col-span-7 space-y-6">
-            <div class="inline-flex items-center space-x-2 px-3 py-1 rounded-lg bg-cyan-500/10 text-cyan-400 border border-cyan-500/30 text-xs font-semibold uppercase tracking-wider">
-              <i class="fa-solid fa-sparkles"></i>
-              <span>About AppliFest 2026</span>
-            </div>
-            <h2 class="text-3xl sm:text-4xl font-display font-extrabold text-white leading-tight">
-              Igniting Tech Innovation at <span class="text-gradient">Parul University</span>
-            </h2>
-            <p class="text-slate-300 text-base sm:text-lg leading-relaxed">
-              Organized by the prestigious <strong>Faculty of IT & Computer Science</strong> at Parul University, Vadodara, AppliFest 2026 brings together dynamic tech enthusiasts, programmers, designers, and gamers from across institutions under one electric roof.
-            </p>
-            <p class="text-slate-400 text-sm leading-relaxed">
-              Under the compilation of <strong>Prof. Vivek P. Dave (Head - MCA)</strong> and the dedicated organizing committee, AppliFest serves as a launchpad for students to transition from abstract theories into deployable digital products, robust security defenses, and creative visual marvels.
-            </p>
-
-            <!-- Eligible Streams Badge Cloud -->
-            <div class="pt-2">
-              <span class="text-xs uppercase tracking-widest text-slate-400 font-bold block mb-3">
-                <i class="fa-solid fa-user-check text-cyan-400 mr-1.5"></i> Eligible Academic Disciplines:
-              </span>
-              <div class="flex flex-wrap gap-2">
-                <span class="px-3 py-1.5 rounded-lg bg-slate-900 text-slate-200 border border-slate-700 text-xs font-semibold">BCA</span>
-                <span class="px-3 py-1.5 rounded-lg bg-slate-900 text-slate-200 border border-slate-700 text-xs font-semibold">BSc IT</span>
-                <span class="px-3 py-1.5 rounded-lg bg-slate-900 text-slate-200 border border-slate-700 text-xs font-semibold">BSc</span>
-                <span class="px-3 py-1.5 rounded-lg bg-slate-900 text-slate-200 border border-slate-700 text-xs font-semibold">BCS</span>
-                <span class="px-3 py-1.5 rounded-lg bg-slate-900 text-slate-200 border border-slate-700 text-xs font-semibold">B.Com</span>
-                <span class="px-3 py-1.5 rounded-lg bg-slate-900 text-slate-200 border border-slate-700 text-xs font-semibold">BBA</span>
-                <span class="px-3 py-1.5 rounded-lg bg-slate-900 text-slate-200 border border-slate-700 text-xs font-semibold">BE / B.Tech</span>
-                <span class="px-3 py-1.5 rounded-lg bg-slate-900 text-cyan-300 border border-cyan-500/40 text-xs font-semibold">MCA</span>
-                <span class="px-3 py-1.5 rounded-lg bg-slate-900 text-cyan-300 border border-cyan-500/40 text-xs font-semibold">MScIT</span>
-              </div>
-            </div>
-
-            <!-- Highlights Checklist -->
-            <div class="grid grid-cols-1 sm:grid-cols-2 gap-3 pt-2 text-sm text-slate-300">
-              <div class="flex items-center space-x-2">
-                <i class="fa-solid fa-circle-check text-emerald-400"></i>
-                <span>Official Certificates for all Participants</span>
-              </div>
-              <div class="flex items-center space-x-2">
-                <i class="fa-solid fa-circle-check text-emerald-400"></i>
-                <span>Winner & Runner-Up Trophies</span>
-              </div>
-              <div class="flex items-center space-x-2">
-                <i class="fa-solid fa-circle-check text-emerald-400"></i>
-                <span>Complimentary Breakfast & Lunch</span>
-              </div>
-              <div class="flex items-center space-x-2">
-                <i class="fa-solid fa-circle-check text-emerald-400"></i>
-                <span>Industry standard CV Raman Lab rigs</span>
-              </div>
-            </div>
-          </div>
-
-          <!-- Feature Cards Bento -->
-          <div class="lg:col-span-5 grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-1 gap-4">
-            <div class="glass-card p-6 rounded-2xl border border-slate-800 hover:border-cyan-500/40 transition-all">
-              <div class="flex items-start space-x-4">
-                <div class="w-12 h-12 rounded-xl bg-cyan-500/10 flex items-center justify-center text-cyan-400 text-xl shrink-0">
-                  <i class="fa-solid fa-building-columns"></i>
-                </div>
-                <div>
-                  <h3 class="font-bold text-white text-lg">Parul University Campus</h3>
-                  <p class="text-xs text-slate-400 mt-1">Vadodara, Gujarat. State-of-the-art infrastructure hosting over 45,000+ national and international students.</p>
-                </div>
-              </div>
-            </div>
-
-            <div class="glass-card p-6 rounded-2xl border border-slate-800 hover:border-indigo-500/40 transition-all">
-              <div class="flex items-start space-x-4">
-                <div class="w-12 h-12 rounded-xl bg-indigo-500/10 flex items-center justify-center text-indigo-400 text-xl shrink-0">
-                  <i class="fa-solid fa-ticket"></i>
-                </div>
-                <div>
-                  <h3 class="font-bold text-white text-lg">Transparent Pricing</h3>
-                  <p class="text-xs text-slate-400 mt-1">₹250/- for Parul University scholars & ₹300/- for other university innovators. Includes all event access & food.</p>
-                </div>
-              </div>
-            </div>
-
-            <div class="glass-card p-6 rounded-2xl border border-slate-800 hover:border-violet-500/40 transition-all">
-              <div class="flex items-start space-x-4">
-                <div class="w-12 h-12 rounded-xl bg-violet-500/10 flex items-center justify-center text-violet-400 text-xl shrink-0">
-                  <i class="fa-solid fa-gamepad"></i>
-                </div>
-                <div>
-                  <h3 class="font-bold text-white text-lg">Jackpot Gaming Thrills</h3>
-                  <p class="text-xs text-slate-400 mt-1">Unleash the gamer in you during the afternoon Jackpot rounds with adrenaline-packed Free Fire & BGMI showdowns.</p>
-                </div>
-              </div>
-            </div>
-          </div>
-
-        </div>
-      </div>
-    </section>
-
-    <section id="events" class="py-20 bg-slate-950/80 relative border-t border-slate-800">
-      <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-        
-        <div class="text-center max-w-3xl mx-auto mb-12">
-          <span class="inline-flex items-center space-x-2 px-3 py-1 rounded-full bg-cyan-500/10 text-cyan-400 text-xs font-semibold uppercase tracking-wider mb-3">
-            <i class="fa-solid fa-trophy"></i>
-            <span>All Competitions</span>
-          </span>
-          <h2 class="text-3xl sm:text-5xl font-display font-extrabold text-white tracking-tight">
-            Explore 8 Epic Events & Gaming
-          </h2>
-          <p class="text-slate-400 text-sm sm:text-base mt-3">
-            Choose your arena. Click any competition card to view its complete abstract, evaluation matrix, guidelines, and venue specifics.
-          </p>
-
-          <!-- Filter Navigation Tabs -->
-          <div class="flex flex-wrap items-center justify-center gap-2 mt-8 p-1.5 rounded-2xl bg-slate-900 border border-slate-800 max-w-xl mx-auto">
-            <button onclick="filterEvents('all', this)" class="event-filter-btn px-4 py-2 rounded-xl text-xs sm:text-sm font-semibold transition-all bg-cyan-500 text-white shadow-md">
-              All Competitions (10)
-            </button>
-            <button onclick="filterEvents('morning', this)" class="event-filter-btn px-4 py-2 rounded-xl text-xs sm:text-sm font-semibold text-slate-400 hover:text-white transition-all">
-              Morning Slot (01-04)
-            </button>
-            <button onclick="filterEvents('afternoon', this)" class="event-filter-btn px-4 py-2 rounded-xl text-xs sm:text-sm font-semibold text-slate-400 hover:text-white transition-all">
-              Afternoon Slot (05-08)
-            </button>
-            <button onclick="filterEvents('jackpot', this)" class="event-filter-btn px-4 py-2 rounded-xl text-xs sm:text-sm font-semibold text-slate-400 hover:text-white transition-all">
-              Jackpot Esports
-            </button>
-          </div>
-        </div>
-
-        <!-- Events Grid -->
-        <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6" id="eventsContainer">
-          
-          <!-- Event 01: CodeBaazi -->
-          <div class="event-card group relative bg-[#0d162b] border border-slate-800 rounded-3xl p-6 hover:border-cyan-500/50 hover:shadow-xl hover:shadow-cyan-500/10 transition-all flex flex-col justify-between" data-category="morning">
-            <div class="space-y-4">
-              <div class="flex items-center justify-between">
-                <span class="text-xs font-mono font-bold px-2.5 py-1 rounded-lg bg-cyan-500/20 text-cyan-300 border border-cyan-500/30">#01 • MORNING</span>
-                <span class="text-xs text-slate-400"><i class="fa-solid fa-users text-cyan-400 mr-1"></i>Max 2</span>
-              </div>
-              <div class="w-14 h-14 rounded-2xl bg-cyan-500/10 border border-cyan-500/20 flex items-center justify-center text-cyan-400 text-2xl group-hover:scale-110 transition-transform">
-                <i class="fa-solid fa-code"></i>
-              </div>
-              <div>
-                <h3 class="text-xl font-bold text-white group-hover:text-cyan-300 transition-colors">CodeBaazi</h3>
-                <p class="text-xs text-cyan-400 font-medium">Build Creative Web Pages</p>
-                <p class="text-xs text-slate-400 mt-2 line-clamp-3">
-                  Produce 2+ web pages based on a surprise topic using HTML, CSS, PHP, with standard responsiveness, layout and accessibility standards.
-                </p>
-              </div>
-            </div>
-            <div class="pt-6 mt-4 border-t border-slate-800/80 flex items-center justify-between">
-              <span class="text-[11px] text-slate-400"><i class="fa-regular fa-clock mr-1"></i>10:45 AM - 12:15 PM</span>
-              <button onclick="showEventDetails(1)" class="text-xs font-semibold text-cyan-400 hover:text-cyan-300 flex items-center space-x-1">
-                <span>Details</span>
-                <i class="fa-solid fa-chevron-right text-[10px]"></i>
-              </button>
-            </div>
-          </div>
-
-          <!-- Event 02: CyberDangal -->
-          <div class="event-card group relative bg-[#0d162b] border border-slate-800 rounded-3xl p-6 hover:border-indigo-500/50 hover:shadow-xl hover:shadow-indigo-500/10 transition-all flex flex-col justify-between" data-category="morning">
-            <div class="space-y-4">
-              <div class="flex items-center justify-between">
-                <span class="text-xs font-mono font-bold px-2.5 py-1 rounded-lg bg-indigo-500/20 text-indigo-300 border border-indigo-500/30">#02 • MORNING</span>
-                <span class="text-xs text-slate-400"><i class="fa-solid fa-user text-indigo-400 mr-1"></i>Solo (1)</span>
-              </div>
-              <div class="w-14 h-14 rounded-2xl bg-indigo-500/10 border border-indigo-500/20 flex items-center justify-center text-indigo-400 text-2xl group-hover:scale-110 transition-transform">
-                <i class="fa-solid fa-shield-halved"></i>
-              </div>
-              <div>
-                <h3 class="text-xl font-bold text-white group-hover:text-indigo-300 transition-colors">CyberDangal</h3>
-                <p class="text-xs text-indigo-400 font-medium">Solve Cybersecurity Challenges</p>
-                <p class="text-xs text-slate-400 mt-2 line-clamp-3">
-                  Test your offensive and defensive instincts across threat identification, digital forensics, security concepts, and problem-solving puzzles.
-                </p>
-              </div>
-            </div>
-            <div class="pt-6 mt-4 border-t border-slate-800/80 flex items-center justify-between">
-              <span class="text-[11px] text-slate-400"><i class="fa-regular fa-clock mr-1"></i>10:45 AM - 12:15 PM</span>
-              <button onclick="showEventDetails(2)" class="text-xs font-semibold text-indigo-400 hover:text-indigo-300 flex items-center space-x-1">
-                <span>Details</span>
-                <i class="fa-solid fa-chevron-right text-[10px]"></i>
-              </button>
-            </div>
-          </div>
-
-          <!-- Event 03: PixelKala -->
-          <div class="event-card group relative bg-[#0d162b] border border-slate-800 rounded-3xl p-6 hover:border-pink-500/50 hover:shadow-xl hover:shadow-pink-500/10 transition-all flex flex-col justify-between" data-category="morning">
-            <div class="space-y-4">
-              <div class="flex items-center justify-between">
-                <span class="text-xs font-mono font-bold px-2.5 py-1 rounded-lg bg-pink-500/20 text-pink-300 border border-pink-500/30">#03 • MORNING</span>
-                <span class="text-xs text-slate-400"><i class="fa-solid fa-user text-pink-400 mr-1"></i>Solo (1)</span>
-              </div>
-              <div class="w-14 h-14 rounded-2xl bg-pink-500/10 border border-pink-500/20 flex items-center justify-center text-pink-400 text-2xl group-hover:scale-110 transition-transform">
-                <i class="fa-solid fa-bezier-curve"></i>
-              </div>
-              <div>
-                <h3 class="text-xl font-bold text-white group-hover:text-pink-300 transition-colors">PixelKala</h3>
-                <p class="text-xs text-pink-400 font-medium">Design Engaging UI/UX Interfaces</p>
-                <p class="text-xs text-slate-400 mt-2 line-clamp-3">
-                  Transform a given problem statement into an intuitive, visually stunning digital experience utilizing design thinking and AI-assisted tools.
-                </p>
-              </div>
-            </div>
-            <div class="pt-6 mt-4 border-t border-slate-800/80 flex items-center justify-between">
-              <span class="text-[11px] text-slate-400"><i class="fa-regular fa-clock mr-1"></i>10:45 AM - 12:15 PM</span>
-              <button onclick="showEventDetails(3)" class="text-xs font-semibold text-pink-400 hover:text-pink-300 flex items-center space-x-1">
-                <span>Details</span>
-                <i class="fa-solid fa-chevron-right text-[10px]"></i>
-              </button>
-            </div>
-          </div>
-
-          <!-- Event 04: Reel Karo, Feel Karo -->
-          <div class="event-card group relative bg-[#0d162b] border border-slate-800 rounded-3xl p-6 hover:border-violet-500/50 hover:shadow-xl hover:shadow-violet-500/10 transition-all flex flex-col justify-between" data-category="morning">
-            <div class="space-y-4">
-              <div class="flex items-center justify-between">
-                <span class="text-xs font-mono font-bold px-2.5 py-1 rounded-lg bg-violet-500/20 text-violet-300 border border-violet-500/30">#04 • MORNING</span>
-                <span class="text-xs text-slate-400"><i class="fa-solid fa-user text-violet-400 mr-1"></i>Solo (1)</span>
-              </div>
-              <div class="w-14 h-14 rounded-2xl bg-violet-500/10 border border-violet-500/20 flex items-center justify-center text-violet-400 text-2xl group-hover:scale-110 transition-transform">
-                <i class="fa-solid fa-video"></i>
-              </div>
-              <div>
-                <h3 class="text-xl font-bold text-white group-hover:text-violet-300 transition-colors">Reel Karo, Feel Karo</h3>
-                <p class="text-xs text-violet-400 font-medium">Create a Creative Campus Reel</p>
-                <p class="text-xs text-slate-400 mt-2 line-clamp-3">
-                  Capture the spirit, vibrant architecture, and energy of Parul University campus through a compelling short-form video reel.
-                </p>
-              </div>
-            </div>
-            <div class="pt-6 mt-4 border-t border-slate-800/80 flex items-center justify-between">
-              <span class="text-[11px] text-slate-400"><i class="fa-regular fa-clock mr-1"></i>10:45 AM - 12:15 PM</span>
-              <button onclick="showEventDetails(4)" class="text-xs font-semibold text-violet-400 hover:text-violet-300 flex items-center space-x-1">
-                <span>Details</span>
-                <i class="fa-solid fa-chevron-right text-[10px]"></i>
-              </button>
-            </div>
-          </div>
-
-          <!-- Event 05: QuizMantra -->
-          <div class="event-card group relative bg-[#0d162b] border border-slate-800 rounded-3xl p-6 hover:border-amber-500/50 hover:shadow-xl hover:shadow-amber-500/10 transition-all flex flex-col justify-between" data-category="afternoon">
-            <div class="space-y-4">
-              <div class="flex items-center justify-between">
-                <span class="text-xs font-mono font-bold px-2.5 py-1 rounded-lg bg-amber-500/20 text-amber-300 border border-amber-500/30">#05 • AFTERNOON</span>
-                <span class="text-xs text-slate-400"><i class="fa-solid fa-user text-amber-400 mr-1"></i>Solo (1)</span>
-              </div>
-              <div class="w-14 h-14 rounded-2xl bg-amber-500/10 border border-amber-500/20 flex items-center justify-center text-amber-400 text-2xl group-hover:scale-110 transition-transform">
-                <i class="fa-solid fa-brain"></i>
-              </div>
-              <div>
-                <h3 class="text-xl font-bold text-white group-hover:text-amber-300 transition-colors">QuizMantra</h3>
-                <p class="text-xs text-amber-400 font-medium">Test Your Technology Knowledge</p>
-                <p class="text-xs text-slate-400 mt-2 line-clamp-3">
-                  Fast-paced interactive quiz challenging your expertise across AI, programming languages, cyber threats, algorithms, and tech revolutions.
-                </p>
-              </div>
-            </div>
-            <div class="pt-6 mt-4 border-t border-slate-800/80 flex items-center justify-between">
-              <span class="text-[11px] text-slate-400"><i class="fa-regular fa-clock mr-1"></i>01:45 PM - 03:15 PM</span>
-              <button onclick="showEventDetails(5)" class="text-xs font-semibold text-amber-400 hover:text-amber-300 flex items-center space-x-1">
-                <span>Details</span>
-                <i class="fa-solid fa-chevron-right text-[10px]"></i>
-              </button>
-            </div>
-          </div>
-
-          <!-- Event 06: AI App Srijan X -->
-          <div class="event-card group relative bg-[#0d162b] border border-slate-800 rounded-3xl p-6 hover:border-cyan-400/50 hover:shadow-xl hover:shadow-cyan-400/10 transition-all flex flex-col justify-between" data-category="afternoon">
-            <div class="space-y-4">
-              <div class="flex items-center justify-between">
-                <span class="text-xs font-mono font-bold px-2.5 py-1 rounded-lg bg-cyan-400/20 text-cyan-300 border border-cyan-400/30">#06 • AFTERNOON</span>
-                <span class="text-xs text-slate-400"><i class="fa-solid fa-user text-cyan-400 mr-1"></i>Solo (1)</span>
-              </div>
-              <div class="w-14 h-14 rounded-2xl bg-cyan-400/10 border border-cyan-400/20 flex items-center justify-center text-cyan-400 text-2xl group-hover:scale-110 transition-transform">
-                <i class="fa-solid fa-microchip"></i>
-              </div>
-              <div>
-                <h3 class="text-xl font-bold text-white group-hover:text-cyan-300 transition-colors">AI App Srijan X</h3>
-                <p class="text-xs text-cyan-400 font-medium">From Idea to AI-Powered App</p>
-                <p class="text-xs text-slate-400 mt-2 line-clamp-3">
-                  Solve real-world challenges by engineering a functional AI-driven prototype using intelligent APIs, machine learning or prompt systems.
-                </p>
-              </div>
-            </div>
-            <div class="pt-6 mt-4 border-t border-slate-800/80 flex items-center justify-between">
-              <span class="text-[11px] text-slate-400"><i class="fa-regular fa-clock mr-1"></i>01:45 PM - 03:15 PM</span>
-              <button onclick="showEventDetails(6)" class="text-xs font-semibold text-cyan-400 hover:text-cyan-300 flex items-center space-x-1">
-                <span>Details</span>
-                <i class="fa-solid fa-chevron-right text-[10px]"></i>
-              </button>
-            </div>
-          </div>
-
-          <!-- Event 07: LogoX -->
-          <div class="event-card group relative bg-[#0d162b] border border-slate-800 rounded-3xl p-6 hover:border-emerald-500/50 hover:shadow-xl hover:shadow-emerald-500/10 transition-all flex flex-col justify-between" data-category="afternoon">
-            <div class="space-y-4">
-              <div class="flex items-center justify-between">
-                <span class="text-xs font-mono font-bold px-2.5 py-1 rounded-lg bg-emerald-500/20 text-emerald-300 border border-emerald-500/30">#07 • AFTERNOON</span>
-                <span class="text-xs text-slate-400"><i class="fa-solid fa-user text-emerald-400 mr-1"></i>Solo (1)</span>
-              </div>
-              <div class="w-14 h-14 rounded-2xl bg-emerald-500/10 border border-emerald-500/20 flex items-center justify-center text-emerald-400 text-2xl group-hover:scale-110 transition-transform">
-                <i class="fa-solid fa-pen-nib"></i>
-              </div>
-              <div>
-                <h3 class="text-xl font-bold text-white group-hover:text-emerald-300 transition-colors">LogoX</h3>
-                <p class="text-xs text-emerald-400 font-medium">Create an Impactful Logo</p>
-                <p class="text-xs text-slate-400 mt-2 line-clamp-3">
-                  Design a captivating visual identity and brand logo based on a surprise brief, mastering symbolism, balance, typography, and color harmony.
-                </p>
-              </div>
-            </div>
-            <div class="pt-6 mt-4 border-t border-slate-800/80 flex items-center justify-between">
-              <span class="text-[11px] text-slate-400"><i class="fa-regular fa-clock mr-1"></i>01:45 PM - 03:15 PM</span>
-              <button onclick="showEventDetails(7)" class="text-xs font-semibold text-emerald-400 hover:text-emerald-300 flex items-center space-x-1">
-                <span>Details</span>
-                <i class="fa-solid fa-chevron-right text-[10px]"></i>
-              </button>
-            </div>
-          </div>
-
-          <!-- Event 08: KalaCanvas -->
-          <div class="event-card group relative bg-[#0d162b] border border-slate-800 rounded-3xl p-6 hover:border-rose-500/50 hover:shadow-xl hover:shadow-rose-500/10 transition-all flex flex-col justify-between" data-category="afternoon">
-            <div class="space-y-4">
-              <div class="flex items-center justify-between">
-                <span class="text-xs font-mono font-bold px-2.5 py-1 rounded-lg bg-rose-500/20 text-rose-300 border border-rose-500/30">#08 • AFTERNOON</span>
-                <span class="text-xs text-slate-400"><i class="fa-solid fa-user text-rose-400 mr-1"></i>Solo (1)</span>
-              </div>
-              <div class="w-14 h-14 rounded-2xl bg-rose-500/10 border border-rose-500/20 flex items-center justify-center text-rose-400 text-2xl group-hover:scale-110 transition-transform">
-                <i class="fa-solid fa-palette"></i>
-              </div>
-              <div>
-                <h3 class="text-xl font-bold text-white group-hover:text-rose-300 transition-colors">KalaCanvas</h3>
-                <p class="text-xs text-rose-400 font-medium">Digital or Physical Creative Poster</p>
-                <p class="text-xs text-slate-400 mt-2 line-clamp-3">
-                  Express creative solutions to modern societal or tech problems via concept sketching, digital poster design, or traditional illustration mediums.
-                </p>
-              </div>
-            </div>
-            <div class="pt-6 mt-4 border-t border-slate-800/80 flex items-center justify-between">
-              <span class="text-[11px] text-slate-400"><i class="fa-regular fa-clock mr-1"></i>01:45 PM - 03:15 PM</span>
-              <button onclick="showEventDetails(8)" class="text-xs font-semibold text-rose-400 hover:text-rose-300 flex items-center space-x-1">
-                <span>Details</span>
-                <i class="fa-solid fa-chevron-right text-[10px]"></i>
-              </button>
-            </div>
-          </div>
-
-          <!-- Jackpot 01: Free Fire -->
-          <div class="event-card group relative bg-gradient-to-b from-[#191928] to-[#0d111d] border border-amber-500/40 rounded-3xl p-6 hover:border-amber-400 transition-all flex flex-col justify-between" data-category="jackpot">
-            <div class="space-y-4">
-              <div class="flex items-center justify-between">
-                <span class="text-xs font-mono font-bold px-2.5 py-1 rounded-lg bg-amber-500/20 text-amber-300 border border-amber-500/40">JACKPOT • ESPORTS</span>
-                <span class="text-xs text-amber-400"><i class="fa-solid fa-fire text-amber-400 mr-1"></i>Mobile</span>
-              </div>
-              <div class="w-14 h-14 rounded-2xl bg-amber-500/15 border border-amber-500/30 flex items-center justify-center text-amber-400 text-2xl group-hover:scale-110 transition-transform">
-                <i class="fa-solid fa-crosshairs"></i>
-              </div>
-              <div>
-                <h3 class="text-xl font-bold text-amber-300">Free Fire Battle</h3>
-                <p class="text-xs text-amber-200 font-medium">Play • Compete • Win Big</p>
-                <p class="text-xs text-slate-300 mt-2 line-clamp-3">
-                  Intense battle royale survival showdown. Squad up or survive alone to claim the ultimate championship crown in CV Raman Labs.
-                </p>
-              </div>
-            </div>
-            <div class="pt-6 mt-4 border-t border-slate-800/80 flex items-center justify-between">
-              <span class="text-[11px] text-slate-300"><i class="fa-regular fa-clock mr-1"></i>03:15 PM - 04:15 PM</span>
-              <button onclick="showEventDetails('ff')" class="text-xs font-bold text-amber-400 hover:text-amber-300 flex items-center space-x-1">
-                <span>View Rules</span>
-                <i class="fa-solid fa-chevron-right text-[10px]"></i>
-              </button>
-            </div>
-          </div>
-
-          <!-- Jackpot 02: BGMI -->
-          <div class="event-card group relative bg-gradient-to-b from-[#18202d] to-[#0c131f] border border-cyan-500/40 rounded-3xl p-6 hover:border-cyan-400 transition-all flex flex-col justify-between" data-category="jackpot">
-            <div class="space-y-4">
-              <div class="flex items-center justify-between">
-                <span class="text-xs font-mono font-bold px-2.5 py-1 rounded-lg bg-cyan-500/20 text-cyan-300 border border-cyan-500/40">JACKPOT • ESPORTS</span>
-                <span class="text-xs text-cyan-400"><i class="fa-solid fa-gamepad text-cyan-400 mr-1"></i>Mobile India</span>
-              </div>
-              <div class="w-14 h-14 rounded-2xl bg-cyan-500/15 border border-cyan-500/30 flex items-center justify-center text-cyan-400 text-2xl group-hover:scale-110 transition-transform">
-                <i class="fa-solid fa-gun"></i>
-              </div>
-              <div>
-                <h3 class="text-xl font-bold text-cyan-300">BGMI Tournament</h3>
-                <p class="text-xs text-cyan-200 font-medium">Tactical Precision & Squad Glory</p>
-                <p class="text-xs text-slate-300 mt-2 line-clamp-3">
-                  Battleground Mobile India custom room championship. Out-rotate, out-frag, and clinch the chicken dinner for exclusive jackpot rewards.
-                </p>
-              </div>
-            </div>
-            <div class="pt-6 mt-4 border-t border-slate-800/80 flex items-center justify-between">
-              <span class="text-[11px] text-slate-300"><i class="fa-regular fa-clock mr-1"></i>03:15 PM - 04:15 PM</span>
-              <button onclick="showEventDetails('bgmi')" class="text-xs font-bold text-cyan-400 hover:text-cyan-300 flex items-center space-x-1">
-                <span>View Rules</span>
-                <i class="fa-solid fa-chevron-right text-[10px]"></i>
-              </button>
-            </div>
-          </div>
-
-        </div>
-
-      </div>
-    </section>
-
-    <section id="schedule" class="py-20 relative">
-      <div class="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8">
-        
-        <div class="text-center mb-16">
-          <span class="inline-flex items-center space-x-2 px-3 py-1 rounded-full bg-indigo-500/10 text-indigo-400 text-xs font-semibold uppercase tracking-wider mb-3">
-            <i class="fa-regular fa-calendar-days"></i>
-            <span>Programme Timeline</span>
-          </span>
-          <h2 class="text-3xl sm:text-5xl font-display font-extrabold text-white">
-            AppliFest-2026 Schedule
-          </h2>
-          <p class="text-slate-400 text-sm mt-3">
-            Mark your calendar: <strong>Monday, October 05, 2026</strong>. Please report promptly for desk accreditation.
-          </p>
-        </div>
-
-        <!-- Timeline Flow -->
-        <div class="space-y-6 relative before:absolute before:inset-0 before:left-5 sm:before:left-32 before:w-0.5 before:bg-gradient-to-b before:from-cyan-500 before:via-indigo-500 before:to-pink-500">
-          
-          <!-- Schedule Item 1 -->
-          <div class="relative flex flex-col sm:flex-row items-start sm:items-center group">
-            <div class="hidden sm:block w-28 text-right pr-6 shrink-0">
-              <span class="text-xs font-mono font-bold text-cyan-400">08:00 AM+</span>
-            </div>
-            <div class="w-10 h-10 rounded-full bg-[#070b14] border-2 border-cyan-500 flex items-center justify-center text-cyan-400 text-xs z-10 shrink-0 mb-3 sm:mb-0 ml-0 sm:ml-0 group-hover:scale-110 transition-transform">
-              <i class="fa-solid fa-id-card"></i>
-            </div>
-            <div class="sm:ml-8 w-full glass-card p-5 rounded-2xl border border-slate-800 hover:border-cyan-500/30 transition-all">
-              <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-1">
-                <span class="sm:hidden text-xs font-mono font-bold text-cyan-400">08:00 AM Onward</span>
-                <h4 class="text-base font-bold text-white">Registration & Participant Kit Distribution</h4>
-                <span class="text-xs font-semibold px-2.5 py-1 rounded-md bg-slate-800 text-slate-300 w-fit">Behind Central Admin Block</span>
-              </div>
-              <p class="text-xs text-slate-400 mt-2">Collect your entry badges, credentials, and welcome stationery kits.</p>
-            </div>
-          </div>
-
-          <!-- Schedule Item 2 -->
-          <div class="relative flex flex-col sm:flex-row items-start sm:items-center group">
-            <div class="hidden sm:block w-28 text-right pr-6 shrink-0">
-              <span class="text-xs font-mono font-bold text-indigo-400">08:00 - 09:30</span>
-            </div>
-            <div class="w-10 h-10 rounded-full bg-[#070b14] border-2 border-indigo-500 flex items-center justify-center text-indigo-400 text-xs z-10 shrink-0 mb-3 sm:mb-0 group-hover:scale-110 transition-transform">
-              <i class="fa-solid fa-mug-hot"></i>
-            </div>
-            <div class="sm:ml-8 w-full glass-card p-5 rounded-2xl border border-slate-800 hover:border-indigo-500/30 transition-all">
-              <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-1">
-                <span class="sm:hidden text-xs font-mono font-bold text-indigo-400">08:00 AM - 09:30 AM</span>
-                <h4 class="text-base font-bold text-white">Breakfast & Networking</h4>
-                <span class="text-xs font-semibold px-2.5 py-1 rounded-md bg-slate-800 text-indigo-300 w-fit">PU Central Canteen</span>
-              </div>
-              <p class="text-xs text-slate-400 mt-2">Complimentary morning breakfast for all registered delegates and faculty coordinators.</p>
-            </div>
-          </div>
-
-          <!-- Schedule Item 3 -->
-          <div class="relative flex flex-col sm:flex-row items-start sm:items-center group">
-            <div class="hidden sm:block w-28 text-right pr-6 shrink-0">
-              <span class="text-xs font-mono font-bold text-violet-400">09:45 - 10:15</span>
-            </div>
-            <div class="w-10 h-10 rounded-full bg-[#070b14] border-2 border-violet-500 flex items-center justify-center text-violet-400 text-xs z-10 shrink-0 mb-3 sm:mb-0 group-hover:scale-110 transition-transform">
-              <i class="fa-solid fa-ribbon"></i>
-            </div>
-            <div class="sm:ml-8 w-full glass-card p-5 rounded-2xl border border-slate-800 hover:border-violet-500/30 transition-all">
-              <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-1">
-                <span class="sm:hidden text-xs font-mono font-bold text-violet-400">09:45 AM - 10:15 AM</span>
-                <h4 class="text-base font-bold text-white">Grand Inauguration Ceremony</h4>
-                <span class="text-xs font-semibold px-2.5 py-1 rounded-md bg-slate-800 text-violet-300 w-fit">Main Auditorium (Notified)</span>
-              </div>
-              <p class="text-xs text-slate-400 mt-2">Dignitary address by Faculty Dean, Prof. Vivek P. Dave (Head - MCA) & guest keynote.</p>
-            </div>
-          </div>
-
-          <!-- Schedule Item 4 -->
-          <div class="relative flex flex-col sm:flex-row items-start sm:items-center group">
-            <div class="hidden sm:block w-28 text-right pr-6 shrink-0">
-              <span class="text-xs font-mono font-bold text-cyan-400">10:45 - 12:15</span>
-            </div>
-            <div class="w-10 h-10 rounded-full bg-[#070b14] border-2 border-cyan-400 flex items-center justify-center text-cyan-400 text-xs z-10 shrink-0 mb-3 sm:mb-0 group-hover:scale-110 transition-transform">
-              <i class="fa-solid fa-laptop-code"></i>
-            </div>
-            <div class="sm:ml-8 w-full glass-card p-5 rounded-2xl border border-cyan-500/30 bg-cyan-950/10">
-              <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-1">
-                <span class="sm:hidden text-xs font-mono font-bold text-cyan-400">10:45 AM - 12:15 PM</span>
-                <h4 class="text-base font-bold text-cyan-200">Morning Events Slot</h4>
-                <span class="text-xs font-semibold px-2.5 py-1 rounded-md bg-cyan-900/60 text-cyan-300 w-fit">CV Raman Labs</span>
-              </div>
-              <div class="mt-2 grid grid-cols-2 sm:grid-cols-4 gap-2 text-[11px] text-slate-300">
-                <span class="bg-slate-900/90 p-1.5 rounded-lg border border-slate-800 text-center">01 CodeBaazi</span>
-                <span class="bg-slate-900/90 p-1.5 rounded-lg border border-slate-800 text-center">02 CyberDangal</span>
-                <span class="bg-slate-900/90 p-1.5 rounded-lg border border-slate-800 text-center">03 PixelKala</span>
-                <span class="bg-slate-900/90 p-1.5 rounded-lg border border-slate-800 text-center">04 Reel Karo</span>
-              </div>
-            </div>
-          </div>
-
-          <!-- Schedule Item 5 -->
-          <div class="relative flex flex-col sm:flex-row items-start sm:items-center group">
-            <div class="hidden sm:block w-28 text-right pr-6 shrink-0">
-              <span class="text-xs font-mono font-bold text-amber-400">12:15 - 01:45</span>
-            </div>
-            <div class="w-10 h-10 rounded-full bg-[#070b14] border-2 border-amber-500 flex items-center justify-center text-amber-400 text-xs z-10 shrink-0 mb-3 sm:mb-0 group-hover:scale-110 transition-transform">
-              <i class="fa-solid fa-utensils"></i>
-            </div>
-            <div class="sm:ml-8 w-full glass-card p-5 rounded-2xl border border-slate-800 hover:border-amber-500/30 transition-all">
-              <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-1">
-                <span class="sm:hidden text-xs font-mono font-bold text-amber-400">Between 12:15 PM & 01:45 PM</span>
-                <h4 class="text-base font-bold text-white">Grand Lunch Break</h4>
-                <span class="text-xs font-semibold px-2.5 py-1 rounded-md bg-slate-800 text-amber-300 w-fit">PU Central Canteen</span>
-              </div>
-              <p class="text-xs text-slate-400 mt-2">Recharge with a delicious buffet meal served at the university canteen.</p>
-            </div>
-          </div>
-
-          <!-- Schedule Item 6 -->
-          <div class="relative flex flex-col sm:flex-row items-start sm:items-center group">
-            <div class="hidden sm:block w-28 text-right pr-6 shrink-0">
-              <span class="text-xs font-mono font-bold text-purple-400">01:45 - 03:15</span>
-            </div>
-            <div class="w-10 h-10 rounded-full bg-[#070b14] border-2 border-purple-500 flex items-center justify-center text-purple-400 text-xs z-10 shrink-0 mb-3 sm:mb-0 group-hover:scale-110 transition-transform">
-              <i class="fa-solid fa-brain"></i>
-            </div>
-            <div class="sm:ml-8 w-full glass-card p-5 rounded-2xl border border-purple-500/30 bg-purple-950/10">
-              <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-1">
-                <span class="sm:hidden text-xs font-mono font-bold text-purple-400">01:45 PM - 03:15 PM</span>
-                <h4 class="text-base font-bold text-purple-200">Afternoon Events Slot</h4>
-                <span class="text-xs font-semibold px-2.5 py-1 rounded-md bg-purple-900/60 text-purple-300 w-fit">CV Raman Labs</span>
-              </div>
-              <div class="mt-2 grid grid-cols-2 sm:grid-cols-4 gap-2 text-[11px] text-slate-300">
-                <span class="bg-slate-900/90 p-1.5 rounded-lg border border-slate-800 text-center">05 QuizMantra</span>
-                <span class="bg-slate-900/90 p-1.5 rounded-lg border border-slate-800 text-center">06 AI App Srijan</span>
-                <span class="bg-slate-900/90 p-1.5 rounded-lg border border-slate-800 text-center">07 LogoX</span>
-                <span class="bg-slate-900/90 p-1.5 rounded-lg border border-slate-800 text-center">08 KalaCanvas</span>
-              </div>
-            </div>
-          </div>
-
-          <!-- Schedule Item 7 -->
-          <div class="relative flex flex-col sm:flex-row items-start sm:items-center group">
-            <div class="hidden sm:block w-28 text-right pr-6 shrink-0">
-              <span class="text-xs font-mono font-bold text-pink-400">03:15 - 04:15</span>
-            </div>
-            <div class="w-10 h-10 rounded-full bg-[#070b14] border-2 border-pink-500 flex items-center justify-center text-pink-400 text-xs z-10 shrink-0 mb-3 sm:mb-0 group-hover:scale-110 transition-transform">
-              <i class="fa-solid fa-gamepad"></i>
-            </div>
-            <div class="sm:ml-8 w-full glass-card p-5 rounded-2xl border border-pink-500/30">
-              <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-1">
-                <span class="sm:hidden text-xs font-mono font-bold text-pink-400">03:15 PM - 04:15 PM</span>
-                <h4 class="text-base font-bold text-pink-300">Jackpot Esports Rounds (Free Fire & BGMI)</h4>
-                <span class="text-xs font-semibold px-2.5 py-1 rounded-md bg-slate-800 text-pink-300 w-fit">CV Raman Labs</span>
-              </div>
-              <p class="text-xs text-slate-400 mt-2">Play hard, compete with top campus fraggers, and win instant cash pools.</p>
-            </div>
-          </div>
-
-          <!-- Schedule Item 8 -->
-          <div class="relative flex flex-col sm:flex-row items-start sm:items-center group">
-            <div class="hidden sm:block w-28 text-right pr-6 shrink-0">
-              <span class="text-xs font-mono font-bold text-yellow-400">04:15 - 04:45</span>
-            </div>
-            <div class="w-10 h-10 rounded-full bg-[#070b14] border-2 border-yellow-400 flex items-center justify-center text-yellow-400 text-xs z-10 shrink-0 mb-3 sm:mb-0 group-hover:scale-110 transition-transform">
-              <i class="fa-solid fa-trophy"></i>
-            </div>
-            <div class="sm:ml-8 w-full glass-card p-5 rounded-2xl border border-yellow-500/30 bg-yellow-500/5">
-              <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-1">
-                <span class="sm:hidden text-xs font-mono font-bold text-yellow-400">04:15 PM - 04:45 PM</span>
-                <h4 class="text-base font-bold text-yellow-200">Closing Ceremony & Prize Distribution</h4>
-                <span class="text-xs font-semibold px-2.5 py-1 rounded-md bg-yellow-900/50 text-yellow-300 w-fit">Will Notify Venue</span>
-              </div>
-              <p class="text-xs text-slate-300 mt-2">Winner & Runner-Up announcements, mementos, certificates, and photo sessions.</p>
-            </div>
-          </div>
-
-        </div>
-
-      </div>
-    </section>
-
-    <section id="guidelines" class="py-20 bg-slate-950/60 border-t border-slate-800">
-      <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-        
-        <div class="text-center max-w-3xl mx-auto mb-16">
-          <span class="inline-flex items-center space-x-2 px-3 py-1 rounded-full bg-rose-500/10 text-rose-400 text-xs font-semibold uppercase tracking-wider mb-3">
-            <i class="fa-solid fa-scale-balanced"></i>
-            <span>Fair Play First</span>
-          </span>
-          <h2 class="text-3xl sm:text-5xl font-display font-extrabold text-white">
-            General Rules & Regulations
-          </h2>
-          <p class="text-slate-400 text-sm mt-3">
-            To ensure parity, meritocracy, and safety, all registered candidates must adhere strictly to Parul University event standards.
-          </p>
-        </div>
-
-        <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-          
-          <div class="glass-card p-6 rounded-3xl border border-red-500/20 bg-red-950/10">
-            <div class="w-12 h-12 rounded-2xl bg-red-500/20 text-rose-400 flex items-center justify-center text-xl mb-4">
-              <i class="fa-solid fa-ban"></i>
-            </div>
-            <h3 class="text-lg font-bold text-white mb-2">Unfair Means & Zero Tolerance</h3>
-            <p class="text-xs text-slate-300 leading-relaxed">
-              Any external storage materials, flash drives, unauthorized net-setters, or external devices are strictly prohibited. Interfering with rival teams or competition servers results in immediate disqualification.
-            </p>
-          </div>
-
-          <div class="glass-card p-6 rounded-3xl border border-amber-500/20 bg-amber-950/10">
-            <div class="w-12 h-12 rounded-2xl bg-amber-500/20 text-amber-400 flex items-center justify-center text-xl mb-4">
-              <i class="fa-solid fa-stopwatch"></i>
-            </div>
-            <h3 class="text-lg font-bold text-white mb-2">Timing & Reporting</h3>
-            <p class="text-xs text-slate-300 leading-relaxed">
-              Participants must report at least <strong>30 minutes</strong> prior to competition kickoff at CV Raman Labs. No extra time will be provided for late arrivals. Every submission must be locked within stipulated hours.
-            </p>
-          </div>
-
-          <div class="glass-card p-6 rounded-3xl border border-cyan-500/20 bg-cyan-950/10">
-            <div class="w-12 h-12 rounded-2xl bg-cyan-500/20 text-cyan-400 flex items-center justify-center text-xl mb-4">
-              <i class="fa-solid fa-desktop"></i>
-            </div>
-            <h3 class="text-lg font-bold text-white mb-2">Workstation Monitoring</h3>
-            <p class="text-xs text-slate-300 leading-relaxed">
-              Judges reserve the absolute right to inspect workstations in-person or via centralized remote surveillance software to ensure genuine work during the competition.
-            </p>
-          </div>
-
-          <div class="glass-card p-6 rounded-3xl border border-indigo-500/20 bg-indigo-950/10">
-            <div class="w-12 h-12 rounded-2xl bg-indigo-500/20 text-indigo-400 flex items-center justify-center text-xl mb-4">
-              <i class="fa-solid fa-id-badge"></i>
-            </div>
-            <h3 class="text-lg font-bold text-white mb-2">Registered Participants Only</h3>
-            <p class="text-xs text-slate-300 leading-relaxed">
-              Only verified candidates with official registration receipt badges are permitted to take part in contests. Impersonation will lead to institutional reporting.
-            </p>
-          </div>
-
-          <div class="glass-card p-6 rounded-3xl border border-purple-500/20 bg-purple-950/10">
-            <div class="w-12 h-12 rounded-2xl bg-purple-500/20 text-purple-400 flex items-center justify-center text-xl mb-4">
-              <i class="fa-solid fa-gavel"></i>
-            </div>
-            <h3 class="text-lg font-bold text-white mb-2">Judges' Authority</h3>
-            <p class="text-xs text-slate-300 leading-relaxed">
-              Judges reserve the right to amend competition instructions or criteria if necessitated by environment. The decision of the evaluation panel shall remain conclusive and final.
-            </p>
-          </div>
-
-          <div class="glass-card p-6 rounded-3xl border border-emerald-500/20 bg-emerald-950/10">
-            <div class="w-12 h-12 rounded-2xl bg-emerald-500/20 text-emerald-400 flex items-center justify-center text-xl mb-4">
-              <i class="fa-solid fa-circle-question"></i>
-            </div>
-            <h3 class="text-lg font-bold text-white mb-2">Rule Clarifications</h3>
-            <p class="text-xs text-slate-300 leading-relaxed">
-              In case of doubt regarding permitted software or task interpretation, it is the participant's responsibility to consult coordinators immediately before execution begins.
-            </p>
-          </div>
-
-        </div>
-
-      </div>
-    </section>
-
-    <section id="committee" class="py-20 relative">
-      <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-        
-        <div class="text-center max-w-3xl mx-auto mb-16">
-          <span class="inline-flex items-center space-x-2 px-3 py-1 rounded-full bg-cyan-500/10 text-cyan-400 text-xs font-semibold uppercase tracking-wider mb-3">
-            <i class="fa-solid fa-user-tie"></i>
-            <span>Leadership & Faculty</span>
-          </span>
-          <h2 class="text-3xl sm:text-5xl font-display font-extrabold text-white">
-            Organising Committee
-          </h2>
-          <p class="text-slate-400 text-sm mt-3">
-            Meet the academic mentors and visionary faculty steering AppliFest 2026.
-          </p>
-        </div>
-
-        <!-- Compiled & Prepared By (Lead Card) -->
-        <div class="max-w-xl mx-auto mb-12">
-          <div class="glass-card p-6 rounded-3xl border-2 border-cyan-500/40 bg-gradient-to-br from-cyan-950/30 to-indigo-950/30 text-center relative overflow-hidden">
-            <div class="absolute -right-6 -bottom-6 w-24 h-24 bg-cyan-500/10 rounded-full blur-xl"></div>
-            <span class="inline-block px-3 py-1 text-[11px] font-mono font-bold uppercase tracking-wider text-cyan-300 bg-cyan-500/20 rounded-full mb-3">
-              Prepared & Compiled By
-            </span>
-            <div class="w-20 h-20 mx-auto rounded-2xl bg-gradient-to-tr from-cyan-500 to-indigo-600 flex items-center justify-center text-white text-3xl font-display font-extrabold shadow-lg shadow-cyan-500/20 mb-3">
-              VD
-            </div>
-            <h3 class="text-2xl font-bold text-white">Prof. Vivek P. Dave</h3>
-            <p class="text-cyan-400 text-sm font-semibold">Head - MCA</p>
-            <p class="text-xs text-slate-400 mt-1">Faculty of IT & Computer Science, Parul University</p>
-          </div>
-        </div>
-
-        <!-- Faculty Organizing Committee Grid (6 Members) -->
-        <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
-          
-          <div class="glass-card p-5 rounded-2xl border border-slate-800 flex items-center space-x-4 hover:border-cyan-500/30 transition-all">
-            <div class="w-14 h-14 rounded-xl bg-slate-800 text-cyan-400 flex items-center justify-center text-xl font-bold font-display shrink-0">
-              VT
-            </div>
+          <!-- Badge Header -->
+          <div class="flex justify-between items-start border-b border-slate-700/60 pb-3">
             <div>
-              <h4 class="font-bold text-white text-base">Prof. Vijya Tulsani</h4>
-              <p class="text-xs text-slate-400">Organising Committee Member</p>
-              <span class="text-[11px] text-cyan-400 font-medium">Faculty of IT & CS</span>
-            </div>
-          </div>
-
-          <div class="glass-card p-5 rounded-2xl border border-slate-800 flex items-center space-x-4 hover:border-cyan-500/30 transition-all">
-            <div class="w-14 h-14 rounded-xl bg-slate-800 text-indigo-400 flex items-center justify-center text-xl font-bold font-display shrink-0">
-              CG
-            </div>
-            <div>
-              <h4 class="font-bold text-white text-base">Dr. Chetan Gondaliya</h4>
-              <p class="text-xs text-slate-400">Organising Committee Member</p>
-              <span class="text-[11px] text-indigo-400 font-medium">Faculty of IT & CS</span>
-            </div>
-          </div>
-
-          <div class="glass-card p-5 rounded-2xl border border-slate-800 flex items-center space-x-4 hover:border-cyan-500/30 transition-all">
-            <div class="w-14 h-14 rounded-xl bg-slate-800 text-violet-400 flex items-center justify-center text-xl font-bold font-display shrink-0">
-              PP
-            </div>
-            <div>
-              <h4 class="font-bold text-white text-base">Prof. Pratik Parmar</h4>
-              <p class="text-xs text-slate-400">Organising Committee Member</p>
-              <span class="text-[11px] text-violet-400 font-medium">Faculty of IT & CS</span>
-            </div>
-          </div>
-          <div class="glass-card p-5 rounded-2xl border border-slate-800 flex items-center space-x-4 hover:border-cyan-500/30 transition-all">
-            <div class="w-14 h-14 rounded-xl bg-slate-800 text-amber-400 flex items-center justify-center text-xl font-bold font-display shrink-0">
-              AA
-            </div>
-            <div>
-              <h4 class="font-bold text-white text-base">Prof. Adarsh Ashok</h4>
-              <p class="text-xs text-slate-400">Organising Committee Member</p>
-              <span class="text-[11px] text-amber-400 font-medium">Faculty of IT & CS</span>
-            </div>
-          </div>
-          <div class="glass-card p-5 rounded-2xl border border-slate-800 flex items-center space-x-4 hover:border-cyan-500/30 transition-all">
-            <div class="w-14 h-14 rounded-xl bg-slate-800 text-pink-400 flex items-center justify-center text-xl font-bold font-display shrink-0">
-              LN
-            </div>
-            <div>
-              <h4 class="font-bold text-white text-base">Prof. Lakshya Namdeo</h4>
-              <p class="text-xs text-slate-400">Organising Committee Member</p>
-              <span class="text-[11px] text-pink-400 font-medium">Faculty of IT & CS</span>
-            </div>
-          </div>
-
-          <div class="glass-card p-5 rounded-2xl border border-slate-800 flex items-center space-x-4 hover:border-cyan-500/30 transition-all">
-            <div class="w-14 h-14 rounded-xl bg-slate-800 text-emerald-400 flex items-center justify-center text-xl font-bold font-display shrink-0">
-              DV
-            </div>
-            <div>
-              <h4 class="font-bold text-white text-base">Prof. Divya Vasoya</h4>
-              <p class="text-xs text-slate-400">Organising Committee Member</p>
-              <span class="text-[11px] text-emerald-400 font-medium">Faculty of IT & CS</span>
-            </div>
-          </div>
-
-          
-
-        </div>
-
-      </div>
-    </section>
-
-    <section id="contact" class="py-20 bg-slate-950/80 border-t border-slate-800">
-      <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-        
-        <div class="grid grid-cols-1 lg:grid-cols-12 gap-12">
-          
-          <!-- Helpline & Venue -->
-          <div class="lg:col-span-6 space-y-6">
-            <span class="inline-flex items-center space-x-2 px-3 py-1 rounded-full bg-cyan-500/10 text-cyan-400 text-xs font-semibold uppercase tracking-wider">
-              <i class="fa-solid fa-headset"></i>
-              <span>Queries & Contacts</span>
-            </span>
-            <h2 class="text-3xl sm:text-4xl font-display font-extrabold text-white">
-              Have Questions? We're Here to Help.
-            </h2>
-            <p class="text-slate-400 text-sm leading-relaxed">
-              Reach out to our organizing student coordinators and faculty desk regarding team allocations, lab specifications, transit, or fees verification.
-            </p>
-
-            <!-- Contact Numbers -->
-            <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
-              <a href="tel:9510615601" class="glass-card p-4 rounded-2xl border border-slate-800 flex items-center space-x-3 hover:border-cyan-500 transition-all group">
-                <div class="w-12 h-12 rounded-xl bg-cyan-500/10 text-cyan-400 flex items-center justify-center text-xl group-hover:scale-105 transition-transform">
-                  <i class="fa-solid fa-phone"></i>
-                </div>
-                <div>
-                  <span class="text-[11px] text-slate-400 uppercase font-medium">Helpline Line 1</span>
-                  <p class="text-base font-bold text-white group-hover:text-cyan-400 transition-colors">+91 95106 15601</p>
-                </div>
-              </a>
-
-              <a href="tel:7999603414" class="glass-card p-4 rounded-2xl border border-slate-800 flex items-center space-x-3 hover:border-indigo-500 transition-all group">
-                <div class="w-12 h-12 rounded-xl bg-indigo-500/10 text-indigo-400 flex items-center justify-center text-xl group-hover:scale-105 transition-transform">
-                  <i class="fa-solid fa-phone"></i>
-                </div>
-                <div>
-                  <span class="text-[11px] text-slate-400 uppercase font-medium">Helpline Line 2</span>
-                  <p class="text-base font-bold text-white group-hover:text-indigo-400 transition-colors">+91 79996 03414</p>
-                </div>
-              </a>
-            </div>
-
-            <!-- Venue Details -->
-            <div class="glass-card p-5 rounded-2xl border border-slate-800 space-y-2">
-              <div class="flex items-center space-x-2 text-cyan-400 font-bold text-sm">
-                <i class="fa-solid fa-location-crosshairs"></i>
-                <span>Festival Location:</span>
-              </div>
-              <p class="text-slate-300 text-sm font-medium">
-                CV Raman Labs, Faculty of IT & Computer Science,<br>
-                Parul University, P.O. Limda, Waghodia, Vadodara, Gujarat - 391760.
-              </p>
-              <div class="text-xs text-slate-400 pt-1">
-                <span class="text-amber-400 font-semibold">Reporting desk:</span> Behind Central Administrative Block
-              </div>
-            </div>
-
-            <!-- Interactive Quick Message Box -->
-            <div class="glass-card p-5 rounded-2xl border border-slate-800 space-y-3">
-              <h4 class="font-bold text-white text-sm">Need quick guidance?</h4>
-              <p class="text-xs text-slate-400">Type your question below and our student helpline will receive your ping.</p>
-              <div class="flex gap-2">
-                <input type="text" id="quickQueryInput" placeholder="e.g. Can we bring our own keyboards?" class="w-full bg-slate-900 border border-slate-700 rounded-xl px-4 py-2.5 text-xs text-white focus:outline-none focus:border-cyan-400">
-                <button onclick="handleQuickQuery()" class="px-4 py-2.5 bg-cyan-500 hover:bg-cyan-600 text-white text-xs font-bold rounded-xl shrink-0 transition-colors">
-                  Send Query
-                </button>
-              </div>
-              <p id="querySuccessMsg" class="hidden text-xs text-emerald-400 font-semibold"><i class="fa-solid fa-check mr-1"></i>Query received! Our desk coordinator will reach out.</p>
-            </div>
-          </div>
-
-          <!-- FAQ Accordion -->
-          <div class="lg:col-span-6 space-y-4">
-            <h3 class="text-xl font-bold text-white mb-4">Frequently Asked Questions</h3>
-
-            <!-- FAQ 1 -->
-            <div class="glass-card rounded-2xl border border-slate-800 overflow-hidden">
-              <button onclick="toggleFaq(1)" class="w-full px-5 py-4 text-left flex items-center justify-between text-sm font-bold text-white hover:text-cyan-400 transition-colors">
-                <span>Can students from non-Parul universities participate?</span>
-                <i id="faq-icon-1" class="fa-solid fa-chevron-down text-xs transition-transform"></i>
-              </button>
-              <div id="faq-content-1" class="hidden px-5 pb-4 text-xs text-slate-300 leading-relaxed border-t border-slate-800/60 pt-3">
-                Yes, absolutely! AppliFest 2026 is an open inter-university flagship event open to BCA, BSc IT, BSc, BCS, B.Com, BBA, BE/B.Tech, MCA, and MScIT students from any recognized college or university for a nominal fee of ₹300/-.
-              </div>
-            </div>
-
-            <!-- FAQ 2 -->
-            <div class="glass-card rounded-2xl border border-slate-800 overflow-hidden">
-              <button onclick="toggleFaq(2)" class="w-full px-5 py-4 text-left flex items-center justify-between text-sm font-bold text-white hover:text-cyan-400 transition-colors">
-                <span>Can I participate in both Morning and Afternoon slots?</span>
-                <i id="faq-icon-2" class="fa-solid fa-chevron-down text-xs transition-transform"></i>
-              </button>
-              <div id="faq-content-2" class="hidden px-5 pb-4 text-xs text-slate-300 leading-relaxed border-t border-slate-800/60 pt-3">
-                Yes! The schedule is crafted to allow you to pick one Morning Slot event (10:45 AM - 12:15 PM) and one Afternoon Slot event (01:45 PM - 03:15 PM), followed by the optional Jackpot Esports round.
-              </div>
-            </div>
-
-            <!-- FAQ 3 -->
-            <div class="glass-card rounded-2xl border border-slate-800 overflow-hidden">
-              <button onclick="toggleFaq(3)" class="w-full px-5 py-4 text-left flex items-center justify-between text-sm font-bold text-white hover:text-cyan-400 transition-colors">
-                <span>Are meals included in the registration fee?</span>
-                <i id="faq-icon-3" class="fa-solid fa-chevron-down text-xs transition-transform"></i>
-              </button>
-              <div id="faq-content-3" class="hidden px-5 pb-4 text-xs text-slate-300 leading-relaxed border-t border-slate-800/60 pt-3">
-                Yes. Your registration pass entitles you to complimentary breakfast (08:00 AM - 09:30 AM) and an energizing buffet lunch (12:15 PM - 01:45 PM) at the Parul University Central Canteen.
-              </div>
-            </div>
-
-            <!-- FAQ 4 -->
-            <div class="glass-card rounded-2xl border border-slate-800 overflow-hidden">
-              <button onclick="toggleFaq(4)" class="w-full px-5 py-4 text-left flex items-center justify-between text-sm font-bold text-white hover:text-cyan-400 transition-colors">
-                <span>Will software and dev tools be provided on the lab computers?</span>
-                <i id="faq-icon-4" class="fa-solid fa-chevron-down text-xs transition-transform"></i>
-              </button>
-              <div id="faq-content-4" class="hidden px-5 pb-4 text-xs text-slate-300 leading-relaxed border-t border-slate-800/60 pt-3">
-                Yes. CV Raman Labs are equipped with standard IDEs (VS Code, Sublime), local servers (XAMPP/WAMP), browsers, and permitted design applications. Note that external USB drives and flash keys are strictly prohibited.
-              </div>
-            </div>
-
-            <!-- FAQ 5 -->
-            <div class="glass-card rounded-2xl border border-slate-800 overflow-hidden">
-              <button onclick="toggleFaq(5)" class="w-full px-5 py-4 text-left flex items-center justify-between text-sm font-bold text-white hover:text-cyan-400 transition-colors">
-                <span>What are the requirements for 'Reel Karo, Feel Karo'?</span>
-                <i id="faq-icon-5" class="fa-solid fa-chevron-down text-xs transition-transform"></i>
-              </button>
-              <div id="faq-content-5" class="hidden px-5 pb-4 text-xs text-slate-300 leading-relaxed border-t border-slate-800/60 pt-3">
-                Participants shoot around the designated university zones using their own smartphones or cameras during morning hours, edit, and submit the final file within the deadline respecting campus privacy guidelines.
-              </div>
-            </div>
-
-          </div>
-
-        </div>
-
-      </div>
-    </section>
-
-    <section class="py-16 relative overflow-hidden">
-      <div class="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8">
-        <div class="p-8 sm:p-12 rounded-3xl bg-gradient-to-r from-cyan-600 via-indigo-600 to-violet-700 relative overflow-hidden shadow-2xl text-center">
-          <div class="absolute -right-20 -top-20 w-80 h-80 bg-white/10 rounded-full blur-2xl"></div>
-          <div class="relative z-10 space-y-4">
-            <span class="inline-block px-3 py-1 rounded-full bg-white/20 text-white font-bold text-xs uppercase tracking-widest">
-              Limited Lab Workstations
-            </span>
-            <h2 class="text-3xl sm:text-5xl font-display font-black text-white">
-              Be Part of Something Bigger!
-            </h2>
-            <p class="text-indigo-100 max-w-2xl mx-auto text-sm sm:text-base">
-              Deadline closes on <strong>2nd October 2026</strong>. Register today to confirm your slot in the CV Raman labs.
-            </p>
-            <div class="pt-4 flex flex-col sm:flex-row items-center justify-center gap-4">
-              <button onclick="openRegistrationModal()" class="w-full sm:w-auto px-8 py-3.5 bg-white text-indigo-950 hover:bg-slate-100 font-bold rounded-xl shadow-lg transition-transform hover:scale-105 active:scale-95">
-                Register Now Online
-              </button>
-              <a href="tel:9510615601" class="w-full sm:w-auto px-6 py-3.5 bg-indigo-900/60 hover:bg-indigo-900 border border-white/30 text-white font-semibold rounded-xl text-center">
-                <i class="fa-solid fa-phone mr-1.5"></i> Dial Helpdesk
-              </a>
-            </div>
-          </div>
-        </div>
-      </div>
-    </section>
-  </main>
-
-  <footer class="bg-[#05070c] border-t border-slate-800 text-slate-400 text-xs py-12 relative z-10">
-    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-      <div class="grid grid-cols-1 md:grid-cols-4 gap-8 mb-10">
-        
-        <div class="space-y-3">
-          <div class="flex items-center space-x-2">
-            <span class="text-lg font-display font-extrabold text-white">Parul University</span>
-            <span class="px-1.5 py-0.5 text-[10px] font-bold bg-rose-500/20 text-rose-400 border border-rose-500/30 rounded">NAAC A++</span>
-          </div>
-          <p class="text-slate-400 leading-relaxed text-xs">
-            Faculty of IT & Computer Science.<br>
-            Committed to nurturing visionary software engineers, cybersecurity specialists, and creative digital designers.
-          </p>
-        </div>
-
-        <div>
-          <h4 class="font-bold text-white text-sm mb-3">Event Overview</h4>
-          <ul class="space-y-2">
-            <li><a href="#about" class="hover:text-cyan-400 transition-colors">About Flagship 2026</a></li>
-            <li><a href="#events" class="hover:text-cyan-400 transition-colors">Competition List</a></li>
-            <li><a href="#schedule" class="hover:text-cyan-400 transition-colors">Event Timeline</a></li>
-            <li><a href="#guidelines" class="hover:text-cyan-400 transition-colors">Rules & Regulations</a></li>
-          </ul>
-        </div>
-
-        <div>
-          <h4 class="font-bold text-white text-sm mb-3">Venue & Timing</h4>
-          <p class="text-slate-400 leading-relaxed">
-            <strong>CV Raman Labs</strong><br>
-            Parul University, Vadodara, Gujarat.<br>
-            Date: 05th October, 2026<br>
-            Reporting: 08:00 AM Onwards
-          </p>
-        </div>
-
-        <div>
-          <h4 class="font-bold text-white text-sm mb-3">Leadership & Credits</h4>
-          <p class="text-slate-400 leading-relaxed">
-            Prepared & Compiled by:<br>
-            <span class="text-white font-semibold">Prof. Vivek P. Dave</span><br>
-            Head - MCA, Faculty of IT & Computer Science.
-          </p>
-        </div>
-
-      </div>
-
-      <div class="pt-8 border-t border-slate-800/80 flex flex-col sm:flex-row items-center justify-between text-slate-500 text-[11px] gap-4">
-        <p>© 2026 Faculty of IT & Computer Science, Parul University. All rights reserved.</p>
-        <div class="flex items-center space-x-4">
-          <span>APPLIFEST 2026 Flagship Edition</span>
-          <span>•</span>
-          <span class="text-cyan-500">Vadodara, Gujarat</span>
-        </div>
-      </div>
-    </div>
-  </footer>
-
-  <div id="eventModal" class="fixed inset-0 z-50 hidden overflow-y-auto bg-black/80 backdrop-blur-sm flex items-center justify-center p-4">
-    <div class="relative w-full max-w-2xl bg-slate-900 border border-slate-700 rounded-3xl p-6 sm:p-8 shadow-2xl overflow-hidden my-8">
-      
-      <!-- Close Button -->
-      <button onclick="closeEventModal()" class="absolute top-5 right-5 w-9 h-9 rounded-full bg-slate-800 text-slate-400 hover:text-white flex items-center justify-center transition-colors">
-        <i class="fa-solid fa-xmark"></i>
-      </button>
-
-      <div id="modalContent">
-        <!-- Injected via JavaScript -->
-      </div>
-    </div>
-  </div>
-
-  <div id="registrationModal" class="fixed inset-0 z-50 hidden overflow-y-auto bg-black/85 backdrop-blur-md flex items-center justify-center p-4">
-    <div class="relative w-full max-w-2xl bg-[#0b1120] border border-cyan-500/40 rounded-3xl p-6 sm:p-8 shadow-2xl my-8">
-      
-      <!-- Close Button -->
-      <button onclick="closeRegistrationModal()" class="absolute top-5 right-5 w-9 h-9 rounded-full bg-slate-800 text-slate-400 hover:text-white flex items-center justify-center transition-colors">
-        <i class="fa-solid fa-xmark"></i>
-      </button>
-
-      <div id="regFormView">
-        <div class="mb-6">
-          <div class="flex items-center space-x-2 text-cyan-400 text-xs font-bold uppercase tracking-wider mb-1">
-            <i class="fa-solid fa-ticket"></i>
-            <span>Official Candidate Registration</span>
-          </div>
-          <h3 class="text-2xl font-display font-extrabold text-white">AppliFest 2026 Pass</h3>
-          <p class="text-xs text-slate-400">Fill your details below to calculate the registration fee and generate your digital entry badge.</p>
-        </div>
-
-        <form id="regForm" onsubmit="handleRegistrationSubmit(event)" class="space-y-4">
-          
-          <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
-            <div>
-              <label class="block text-xs font-semibold text-slate-300 mb-1.5">Full Name *</label>
-              <input type="text" id="regName" required placeholder="e.g. Aryan Sharma" class="w-full bg-slate-900 border border-slate-700 rounded-xl px-3.5 py-2.5 text-xs text-white focus:outline-none focus:border-cyan-400">
-            </div>
-            <div>
-              <label class="block text-xs font-semibold text-slate-300 mb-1.5">Email Address *</label>
-              <input type="email" id="regEmail" required placeholder="aryan@example.com" class="w-full bg-slate-900 border border-slate-700 rounded-xl px-3.5 py-2.5 text-xs text-white focus:outline-none focus:border-cyan-400">
-            </div>
-          </div>
-
-          <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
-            <div>
-              <label class="block text-xs font-semibold text-slate-300 mb-1.5">Mobile Contact *</label>
-              <input type="tel" id="regPhone" required placeholder="10-digit mobile number" class="w-full bg-slate-900 border border-slate-700 rounded-xl px-3.5 py-2.5 text-xs text-white focus:outline-none focus:border-cyan-400">
-            </div>
-            <div>
-              <label class="block text-xs font-semibold text-slate-300 mb-1.5">Academic Stream *</label>
-              <select id="regStream" required class="w-full bg-slate-900 border border-slate-700 rounded-xl px-3.5 py-2.5 text-xs text-white focus:outline-none focus:border-cyan-400">
-                <option value="BCA">BCA</option>
-                <option value="BSc IT">BSc IT</option>
-                <option value="BSc">BSc</option>
-                <option value="BCS">BCS</option>
-                <option value="B.Com">B.Com</option>
-                <option value="BBA">BBA</option>
-                <option value="BE / B.Tech">BE / B.Tech</option>
-                <option value="MCA" selected>MCA</option>
-                <option value="MScIT">MScIT</option>
-              </select>
-            </div>
-          </div>
-
-          <!-- University Affiliation (Price Trigger) -->
-          <div class="p-3.5 rounded-2xl bg-slate-900/90 border border-slate-800 space-y-2">
-            <label class="block text-xs font-bold text-white">University Affiliation & Pricing *</label>
-            <div class="grid grid-cols-1 sm:grid-cols-2 gap-3">
-              <label class="flex items-center p-3 rounded-xl border border-slate-700 hover:border-cyan-500 cursor-pointer bg-slate-950/60 transition-colors">
-                <input type="radio" name="universityType" value="pu" checked onchange="updatePrice()" class="text-cyan-500 focus:ring-0">
-                <div class="ml-3">
-                  <span class="block text-xs font-bold text-white">Parul University Student</span>
-                  <span class="block text-[11px] text-cyan-400 font-bold">Fee: ₹250/-</span>
-                </div>
-              </label>
-
-              <label class="flex items-center p-3 rounded-xl border border-slate-700 hover:border-cyan-500 cursor-pointer bg-slate-950/60 transition-colors">
-                <input type="radio" name="universityType" value="other" onchange="updatePrice()" class="text-cyan-500 focus:ring-0">
-                <div class="ml-3">
-                  <span class="block text-xs font-bold text-white">Other University Student</span>
-                  <span class="block text-[11px] text-amber-400 font-bold">Fee: ₹300/-</span>
-                </div>
-              </label>
-            </div>
-          </div>
-
-          <!-- Event Slot Choices -->
-          <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
-            <div>
-              <label class="block text-xs font-semibold text-slate-300 mb-1.5">Morning Event (10:45 AM) *</label>
-              <select id="regMorningEvent" class="w-full bg-slate-900 border border-slate-700 rounded-xl px-3.5 py-2.5 text-xs text-white focus:outline-none focus:border-cyan-400">
-                <option value="01 CodeBaazi">01 CodeBaazi (Web Dev)</option>
-                <option value="02 CyberDangal">02 CyberDangal (Security)</option>
-                <option value="03 PixelKala">03 PixelKala (UI/UX)</option>
-                <option value="04 Reel Karo">04 Reel Karo, Feel Karo</option>
-              </select>
-            </div>
-            <div>
-              <label class="block text-xs font-semibold text-slate-300 mb-1.5">Afternoon Event (01:45 PM) *</label>
-              <select id="regAfternoonEvent" class="w-full bg-slate-900 border border-slate-700 rounded-xl px-3.5 py-2.5 text-xs text-white focus:outline-none focus:border-cyan-400">
-                <option value="05 QuizMantra">05 QuizMantra (Tech Quiz)</option>
-                <option value="06 AI App Srijan X">06 AI App Srijan X (AI Apps)</option>
-                <option value="07 LogoX">07 LogoX (Branding & Logo)</option>
-                <option value="08 KalaCanvas">08 KalaCanvas (Poster Design)</option>
-              </select>
-            </div>
-          </div>
-
-          <!-- Optional Jackpot round -->
-          <div>
-            <label class="block text-xs font-semibold text-slate-300 mb-1.5">Optional Jackpot Esports (03:15 PM)</label>
-            <select id="regJackpotEvent" class="w-full bg-slate-900 border border-slate-700 rounded-xl px-3.5 py-2.5 text-xs text-white focus:outline-none focus:border-cyan-400">
-              <option value="None">None (Only Academic Events)</option>
-              <option value="Free Fire Battle">Free Fire Mobile</option>
-              <option value="BGMI Tournament">BGMI (Battlegrounds Mobile India)</option>
-            </select>
-          </div>
-
-          <!-- Total Calculation Banner -->
-          <div class="flex items-center justify-between p-3.5 rounded-xl bg-cyan-950/30 border border-cyan-500/30">
-            <span class="text-xs font-medium text-slate-300">Total Registration Amount:</span>
-            <span id="displayFee" class="text-lg font-display font-extrabold text-cyan-300">₹250/-</span>
-          </div>
-
-          <button type="submit" class="w-full py-3.5 bg-gradient-to-r from-cyan-500 via-indigo-600 to-violet-600 text-white font-bold rounded-xl shadow-lg shadow-cyan-500/25 hover:shadow-cyan-500/40 transition-all flex items-center justify-center space-x-2">
-            <span>Confirm & Generate Digital Badge</span>
-            <i class="fa-solid fa-arrow-right text-xs"></i>
-          </button>
-        </form>
-      </div>
-
-      <!-- Registration Success / Digital Badge Ticket Preview -->
-      <div id="regPassView" class="hidden space-y-6 text-center">
-        <div class="w-16 h-16 bg-emerald-500/20 text-emerald-400 rounded-full flex items-center justify-center mx-auto text-3xl">
-          <i class="fa-solid fa-check"></i>
-        </div>
-        <div>
-          <h3 class="text-2xl font-bold text-white">Registration Successful!</h3>
-          <p class="text-xs text-slate-400">Save or screenshot this official delegate credential pass for verification at Parul University.</p>
-        </div>
-
-        <!-- Ticket Card -->
-        <div id="ticketCard" class="bg-gradient-to-b from-[#131e36] to-[#0b101d] border-2 border-cyan-500/40 rounded-3xl p-6 text-left relative overflow-hidden shadow-2xl">
-          <div class="flex items-start justify-between border-b border-slate-700/80 pb-4 mb-4">
-            <div>
-              <span class="text-[10px] uppercase font-bold text-rose-400 tracking-wider">Parul University (NAAC A++)</span>
-              <h4 class="text-xl font-display font-black text-white">APPLIFEST 2026</h4>
-              <p class="text-[11px] text-cyan-400">Faculty of IT & Computer Science</p>
+              <p class="text-[10px] uppercase font-bold text-rose-400 tracking-wider">Parul University (NAAC A++)</p>
+              <h3 class="text-base font-black tracking-tight text-white">INNOVATION FEST 2.0</h3>
+              <p id="badgeCollege" class="text-[10px] text-cyan-300 font-medium truncate max-w-[190px]">Faculty of IT & CS</p>
             </div>
             <div class="text-right">
-              <span class="text-[10px] font-mono text-slate-400 block">DELEGATE PASS</span>
-              <span id="badgePassId" class="text-xs font-mono font-bold text-indigo-300">#PU-APP-8842</span>
+              <span class="text-[9px] uppercase tracking-wider text-slate-400 block font-semibold">Delegate Pass</span>
+              <span id="badgePassId" class="text-xs font-mono font-bold text-cyan-400">#PU-APP-1000</span>
             </div>
           </div>
 
-          <div class="grid grid-cols-2 gap-3 text-xs mb-4">
+          <!-- Attendee Information Grid -->
+          <div class="grid grid-cols-2 gap-y-3 gap-x-2 my-4 text-xs">
             <div>
-              <span class="text-slate-400 block text-[10px]">Participant:</span>
-              <span id="badgeName" class="font-bold text-white">Aryan Sharma</span>
+              <span class="text-[10px] text-slate-400 block uppercase">Participant:</span>
+              <p id="badgeName" class="font-bold text-slate-100 truncate text-[13px]"></p>
             </div>
             <div>
-              <span class="text-slate-400 block text-[10px]">Stream / Discipline:</span>
-              <span id="badgeStream" class="font-bold text-cyan-300">MCA</span>
+              <span class="text-[10px] text-slate-400 block uppercase">Stream / Discipline:</span>
+              <p id="badgeStream" class="font-bold text-cyan-400 truncate"></p>
             </div>
             <div>
-              <span class="text-slate-400 block text-[10px]">Morning Track:</span>
-              <span id="badgeMorning" class="font-bold text-slate-200">01 CodeBaazi</span>
+              <span class="text-[10px] text-slate-400 block uppercase">Morning Track:</span>
+              <p id="badgeMorning" class="font-bold text-slate-200 truncate"></p>
             </div>
             <div>
-              <span class="text-slate-400 block text-[10px]">Afternoon Track:</span>
-              <span id="badgeAfternoon" class="font-bold text-slate-200">06 AI App Srijan</span>
+              <span class="text-[10px] text-slate-400 block uppercase">Afternoon Track:</span>
+              <p id="badgeAfternoon" class="font-bold text-slate-200 truncate"></p>
             </div>
             <div>
-              <span class="text-slate-400 block text-[10px]">Event Date:</span>
-              <span class="font-bold text-amber-300">05 October 2026</span>
+              <span class="text-[10px] text-slate-400 block uppercase">Event Date:</span>
+              <p class="font-bold text-amber-400">05 October 2026</p>
             </div>
             <div>
-              <span class="text-slate-400 block text-[10px]">Venue:</span>
-              <span class="font-bold text-slate-200">CV Raman Labs</span>
+              <span class="text-[10px] text-slate-400 block uppercase">Venue:</span>
+              <p class="font-bold text-slate-200">CV Raman Labs</p>
             </div>
           </div>
 
-          <div class="flex items-center justify-between pt-3 border-t border-slate-700/80">
+          <!-- Fee Status & QR Code Footer -->
+          <div class="flex items-center justify-between pt-3 border-t border-slate-700/60">
             <div>
-              <span class="text-[10px] text-slate-400">Fee Status:</span>
-              <span id="badgeFee" class="text-xs font-bold text-emerald-400 block">PAID (₹250)</span>
+              <span class="text-[10px] text-slate-400 block uppercase">Fee Status:</span>
+              <span id="badgeFee" class="text-xs font-bold text-emerald-400">PAID</span>
             </div>
-            <!-- Simulated QR representation -->
-            <div class="w-12 h-12 bg-white p-1 rounded-lg flex items-center justify-center">
-              <i class="fa-solid fa-qrcode text-slate-900 text-3xl"></i>
-            </div>
+            <div id="qrcode" class="p-1 bg-white rounded-lg shadow"></div>
           </div>
         </div>
 
-        <div class="flex flex-col sm:flex-row gap-3">
-          <button onclick="window.print()" class="flex-1 py-3 bg-cyan-500 hover:bg-cyan-600 text-white font-bold rounded-xl text-xs transition-colors flex items-center justify-center space-x-2">
-            <i class="fa-solid fa-print"></i>
-            <span>Print / Save Badge</span>
+        <!-- Action Buttons -->
+        <div class="mt-5 space-y-2 no-print">
+          <button 
+            onclick="window.print()" 
+            class="w-full bg-cyan-400 hover:bg-cyan-300 text-slate-950 font-bold py-3 rounded-xl transition text-sm flex items-center justify-center gap-2 shadow-lg shadow-cyan-400/20"
+          >
+            <svg class="w-4 h-4" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M6 9V2h12v7M6 18H4a2 2 0 01-2-2v-5a2 2 0 012-2h16a2 2 0 012 2v5a2 2 0 01-2 2h-2m-12 0v4h12v-4M6 14h.01"></path></svg>
+            Print / Save Badge
           </button>
-          <button onclick="resetRegistration()" class="px-5 py-3 glassmorphism hover:bg-slate-800 text-slate-300 font-semibold rounded-xl text-xs transition-colors">
-            Register Another
+          
+          <button 
+            onclick="resetApp()" 
+            class="w-full bg-[#0a182e] hover:bg-[#0f2444] text-slate-300 border border-slate-700/70 font-semibold py-2.5 rounded-xl transition text-xs"
+          >
+            Search Another Registration
           </button>
         </div>
+
       </div>
-
     </div>
+
   </div>
 
   <script>
-    // Event Data Repository based on Booklet Details
-    const eventsData = {
-      1: {
-        id: "01",
-        name: "CodeBaazi",
-        slot: "Morning Slot (10:45 AM - 12:15 PM)",
-        venue: "CV Raman Labs",
-        teamSize: "Maximum 2 participants team",
-        color: "cyan",
-        icon: "fa-code",
-        abstract: "The purpose of this competition is to produce 2+ web pages based on a given topic (announced on the day of the competition), permitted development tools, and provided web browsers while applying PHP, HTML, CSS, attribution, accessibility, and user interface standards. Each team will be assigned a computer and must execute genuine web standards.",
-        guidelines: [
-          "Web pages must employ standards-based web design with well-formed HTML and CSS.",
-          "Participants may be allowed to use JS, Bootstrap, etc., but only after checking registered contestants' expertise.",
-          "Must do all work on the assigned workstation using permitted dev tools.",
-          "Participants may use graphics and media resources provided on the workstation."
-        ],
-        criteria: ["Functionality & Working", "UI/UX & Visual Design", "Code Structure & Organization", "HTML & CSS Standards", "Creativity & Innovation", "Accessibility & Responsiveness"]
-      },
-      2: {
-        id: "02",
-        name: "CyberDangal",
-        slot: "Morning Slot (10:45 AM - 12:15 PM)",
-        venue: "CV Raman Labs",
-        teamSize: "1 participant (Solo)",
-        color: "indigo",
-        icon: "fa-shield-halved",
-        abstract: "CyberDangal is a cybersecurity challenge designed to test participants' knowledge of cybersecurity concepts, threat identification, digital security, and problem-solving. Participants encounter security-oriented challenges requiring logical deduction and practical understanding of cyber threats and defensive techniques.",
-        guidelines: [
-          "Participants will receive security-oriented challenges and threat scenarios.",
-          "Covers security concepts, threat analysis, logical puzzles, and practical defensive tasks.",
-          "Unauthorized access to external systems or networks is strictly prohibited.",
-          "Participants must not attempt to modify or disrupt competition network infrastructure."
-        ],
-        criteria: ["Accuracy", "Cybersecurity Knowledge", "Problem-Solving", "Threat Identification", "Practical Execution", "Time Management"]
-      },
-      3: {
-        id: "03",
-        name: "PixelKala",
-        slot: "Morning Slot (10:45 AM - 12:15 PM)",
-        venue: "CV Raman Labs",
-        teamSize: "1 participant (Solo)",
-        color: "pink",
-        icon: "fa-bezier-curve",
-        abstract: "PixelKala is a UI/UX design competition where participants transform a given problem statement into an engaging, intuitive, and visually appealing digital interface. Participants demonstrate their creativity, design thinking, UX principles, and ability to incorporate AI-assisted design workflows.",
-        guidelines: [
-          "The design challenge and brief will be announced right at competition start.",
-          "Participants must create a modern user interface prototype satisfying all user journeys.",
-          "Design tools permitted by organizers (Figma/Photoshop/Illustrator/Canva) may be utilized.",
-          "Consistency in typography, color palette, spacing, and accessibility must be maintained."
-        ],
-        criteria: ["Visual Appeal", "Creativity & Originality", "UI/UX Design Thinking", "Usability & Navigation Flow"]
-      },
-      4: {
-        id: "04",
-        name: "Reel Karo, Feel Karo",
-        slot: "Morning Slot (10:45 AM - 12:15 PM)",
-        venue: "Campus Wide & CV Raman Labs",
-        teamSize: "1 participant (Solo)",
-        color: "violet",
-        icon: "fa-video",
-        abstract: "This competition invites creators to capture the electric spirit, architecture, student vibe, and experiences of Parul University campus through a creative short-form reel. Focuses on cinematic storytelling, camera angles, sound design, rhythm, and unique campus perspectives.",
-        guidelines: [
-          "Reel must be shot within the Parul University Vadodara campus during allotted time.",
-          "Content must strictly adhere to the festival theme: 'Reel Karo, Feel Karo'.",
-          "Smartphones or handheld video cameras are permitted.",
-          "Editing, royalty-free audio, voiceover, and color grade are permitted.",
-          "Respect privacy of students and staff; no entry into restricted labs without permission."
-        ],
-        criteria: ["Creativity & Originality", "Visual & Audio Quality", "Cinematic Storytelling", "Overall Presentation"]
-      },
-      5: {
-        id: "05",
-        name: "QuizMantra",
-        slot: "Afternoon Slot (01:45 PM - 03:15 PM)",
-        venue: "CV Raman Labs",
-        teamSize: "1 participant (Solo)",
-        color: "amber",
-        icon: "fa-brain",
-        abstract: "QuizMantra is an interactive technology quiz designed to test participants across computing milestones, programming syntax, artificial intelligence, cybersecurity, algorithms, and next-gen digital breakthroughs with rapid speed and conceptual accuracy.",
-        guidelines: [
-          "May consist of multiple rounds including preliminary buzzer and tie-breaker rounds.",
-          "Questions cover IT, Computer Science, AI, Cyber threats, and emerging software paradigms.",
-          "Strict ban on external search engines or devices during testing rounds.",
-          "The decision of the quizmaster and coordinators is binding."
-        ],
-        criteria: ["Technical Knowledge", "Logical Thinking", "Accuracy", "Time Management & Speed"]
-      },
-      6: {
-        id: "06",
-        name: "AI App Srijan X - From Idea to App",
-        slot: "Afternoon Slot (01:45 PM - 03:15 PM)",
-        venue: "CV Raman Labs",
-        teamSize: "1 participant (Solo)",
-        color: "cyan",
-        icon: "fa-microchip",
-        abstract: "An application development challenge where participants identify a real-world problem and build an innovative tech-based solution using artificial intelligence, machine learning APIs, or intelligent algorithmic agents. Shows end-to-end capability from raw idea to functional tool.",
-        guidelines: [
-          "Problem statement is announced by organizers at launch.",
-          "Participants must architect and build a working functional prototype on the lab machines.",
-          "Permitted languages, AI APIs, frameworks, and dev platforms can be utilized.",
-          "Pre-built external projects cannot be submitted; solutions must be created live."
-        ],
-        criteria: ["Innovation & Creativity", "Functionality & Working Prototype", "Usability", "Technical Implementation", "Pitch & Presentation"]
-      },
-      7: {
-        id: "07",
-        name: "LogoX",
-        slot: "Afternoon Slot (01:45 PM - 03:15 PM)",
-        venue: "CV Raman Labs",
-        teamSize: "1 participant (Solo)",
-        color: "emerald",
-        icon: "fa-pen-nib",
-        abstract: "A branding and digital identity competition challenging participants to create a memorable logo and visual branding guidelines for a surprise company or startup brief. Focuses on brand resonance, minimalism, vector precision, and color theory.",
-        guidelines: [
-          "The branding brief will be unveiled at the commencement of the session.",
-          "Participants create original vector logos and supporting brand color assets.",
-          "Permitted design tools may be used. External assets must respect copyright rules.",
-          "Must submit rationale explaining color psychology and symbol significance."
-        ],
-        criteria: ["Creativity & Originality", "Visual Appeal", "Relevance to Theme & Brief", "Branding & Presentation"]
-      },
-      8: {
-        id: "08",
-        name: "KalaCanvas",
-        slot: "Afternoon Slot (01:45 PM - 03:15 PM)",
-        venue: "CV Raman Labs",
-        teamSize: "1 participant (Solo)",
-        color: "rose",
-        icon: "fa-palette",
-        abstract: "A visual innovation challenge where candidates transform a conceptual problem into a powerful visual poster either digitally or through physical art media. Communicates societal solutions through artistic flair, structured hierarchy, and storytelling.",
-        guidelines: [
-          "Theme or problem statement is declared at kickoff.",
-          "Can be submitted digitally or hand-drawn on poster sheets.",
-          "Participants opting for physical poster creation must bring their own sketching stationery (drawing sheets, colors, markers, rulers).",
-          "Must highlight target audience, problem context, and positive impact clearly."
-        ],
-        criteria: ["Creativity & Originality", "Concept & Relevance", "Visual Aesthetics", "Clarity & Presentation"]
-      },
-      ff: {
-        id: "JP1",
-        name: "Free Fire Battle Royale",
-        slot: "Jackpot Round (03:15 PM - 04:15 PM)",
-        venue: "CV Raman Labs",
-        teamSize: "Individual / Squad",
-        color: "amber",
-        icon: "fa-crosshairs",
-        abstract: "High-octane mobile battle royale showdown. Survivors battle across customized tournament rooms to claim the ultimate jackpot trophy and bragging rights.",
-        guidelines: [
-          "Players must bring their own mobile devices with updated client.",
-          "Zero tolerance for third-party config mods, emulators, or game file tampering.",
-          "Tournament room code and password will be issued in the lab."
-        ],
-        criteria: ["Survival Rank Points", "Kill Count", "Strategic Gameplay"]
-      },
-      bgmi: {
-        id: "JP2",
-        name: "BGMI (Battlegrounds Mobile India)",
-        slot: "Jackpot Round (03:15 PM - 04:15 PM)",
-        venue: "CV Raman Labs",
-        teamSize: "Individual / Squad",
-        color: "cyan",
-        icon: "fa-gun",
-        abstract: "Custom room tactical battleground contest. Drop in, loot up, execute squad rotations, and outsmart rivals for the championship dinner.",
-        guidelines: [
-          "Played strictly on mobile phones; tablet/iPad and emulator usage restricted.",
-          "Players must maintain stable cellular connection or university WiFi where allotted.",
-          "Referees inspect screens prior to drop."
-        ],
-        criteria: ["Position Ranking", "Elimination Frags", "Team Strategy"]
-      }
-    };
+    // Paste your Google Apps Script Web App URL below
+    const APPS_SCRIPT_URL = "YOUR_GOOGLE_APPS_SCRIPT_WEB_APP_URL";
 
-    // Filter events function
-    function filterEvents(category, btn) {
-      document.querySelectorAll('.event-filter-btn').forEach(b => {
-        b.classList.remove('bg-cyan-500', 'text-white', 'shadow-md');
-        b.classList.add('text-slate-400');
-      });
-      btn.classList.add('bg-cyan-500', 'text-white', 'shadow-md');
-      btn.classList.remove('text-slate-400');
+    const form = document.getElementById("verifyForm");
+    const searchView = document.getElementById("searchView");
+    const passView = document.getElementById("passView");
+    const errorBox = document.getElementById("errorBox");
+    const submitBtn = document.getElementById("submitBtn");
 
-      const cards = document.querySelectorAll('.event-card');
-      cards.forEach(card => {
-        if (category === 'all' || card.getAttribute('data-category') === category) {
-          card.style.display = 'flex';
-        } else {
-          card.style.display = 'none';
-        }
-      });
-    }
-
-    // Show Event Details in Modal
-    function showEventDetails(key) {
-      const data = eventsData[key];
-      if (!data) return;
-
-      const modalContent = document.getElementById('modalContent');
-      let guidelinesHtml = data.guidelines.map(g => `<li class="flex items-start space-x-2"><i class="fa-solid fa-angle-right text-cyan-400 mt-1 shrink-0"></i><span>${g}</span></li>`).join('');
-      let criteriaHtml = data.criteria.map(c => `<span class="px-2.5 py-1 rounded-md bg-slate-800 text-slate-200 border border-slate-700 text-[11px] font-semibold">${c}</span>`).join('');
-
-      modalContent.innerHTML = `
-        <div class="space-y-4">
-          <div class="flex items-center space-x-3">
-            <div class="w-12 h-12 rounded-2xl bg-cyan-500/20 text-cyan-400 flex items-center justify-center text-2xl">
-              <i class="fa-solid ${data.icon}"></i>
-            </div>
-            <div>
-              <span class="text-xs font-mono font-bold text-cyan-400 uppercase tracking-wider">Competition #${data.id}</span>
-              <h3 class="text-2xl font-bold text-white">${data.name}</h3>
-            </div>
-          </div>
-
-          <div class="grid grid-cols-2 sm:grid-cols-3 gap-2.5 p-3 rounded-xl bg-slate-950/60 border border-slate-800 text-xs">
-            <div>
-              <span class="text-slate-400 block text-[10px]">Timing Slot:</span>
-              <span class="font-semibold text-slate-200">${data.slot}</span>
-            </div>
-            <div>
-              <span class="text-slate-400 block text-[10px]">Team Size:</span>
-              <span class="font-semibold text-cyan-300">${data.teamSize}</span>
-            </div>
-            <div class="col-span-2 sm:col-span-1">
-              <span class="text-slate-400 block text-[10px]">Location:</span>
-              <span class="font-semibold text-slate-200">${data.venue}</span>
-            </div>
-          </div>
-
-          <div>
-            <h4 class="text-xs uppercase font-bold text-cyan-400 tracking-wider mb-1.5">Abstract & Objective</h4>
-            <p class="text-xs text-slate-300 leading-relaxed">${data.abstract}</p>
-          </div>
-
-          <div>
-            <h4 class="text-xs uppercase font-bold text-cyan-400 tracking-wider mb-2">Rules & Guidelines</h4>
-            <ul class="text-xs text-slate-300 space-y-1.5 leading-relaxed">
-              ${guidelinesHtml}
-            </ul>
-          </div>
-
-          <div>
-            <h4 class="text-xs uppercase font-bold text-cyan-400 tracking-wider mb-2">Evaluation Criteria</h4>
-            <div class="flex flex-wrap gap-2">
-              ${criteriaHtml}
-            </div>
-          </div>
-
-          <div class="pt-4 border-t border-slate-800 flex items-center justify-between">
-            <span class="text-xs text-slate-400">Ready to compete?</span>
-            <button onclick="closeEventModal(); openRegistrationModal();" class="px-5 py-2.5 rounded-xl bg-cyan-500 hover:bg-cyan-600 text-white font-bold text-xs shadow-lg transition-transform hover:scale-105">
-              Register for this Event
-            </button>
-          </div>
-        </div>
-      `;
-
-      document.getElementById('eventModal').classList.remove('hidden');
-    }
-
-    function closeEventModal() {
-      document.getElementById('eventModal').classList.add('hidden');
-    }
-
-    // Registration Modal toggles
-    function openRegistrationModal() {
-      document.getElementById('registrationModal').classList.remove('hidden');
-    }
-
-    function closeRegistrationModal() {
-      document.getElementById('registrationModal').classList.add('hidden');
-    }
-
-    // Dynamic Price Calculator
-    function updatePrice() {
-      const type = document.querySelector('input[name="universityType"]:checked').value;
-      const feeElem = document.getElementById('displayFee');
-      if (type === 'pu') {
-        feeElem.innerText = '₹250/-';
-      } else {
-        feeElem.innerText = '₹300/-';
-      }
-    }
-
-    // Registration Form Handler
-    function handleRegistrationSubmit(e) {
+    form.addEventListener("submit", async (e) => {
       e.preventDefault();
-      const name = document.getElementById('regName').value;
-      const stream = document.getElementById('regStream').value;
-      const morning = document.getElementById('regMorningEvent').value;
-      const afternoon = document.getElementById('regAfternoonEvent').value;
-      const type = document.querySelector('input[name="universityType"]:checked').value;
+      const query = document.getElementById("queryInput").value.trim();
+      if (!query) return;
 
-      const randomId = Math.floor(1000 + Math.random() * 9000);
-      document.getElementById('badgePassId').innerText = `#PU-APP-${randomId}`;
-      document.getElementById('badgeName').innerText = name;
-      document.getElementById('badgeStream').innerText = stream;
-      document.getElementById('badgeMorning').innerText = morning;
-      document.getElementById('badgeAfternoon').innerText = afternoon;
-      document.getElementById('badgeFee').innerText = type === 'pu' ? 'PAID (₹250 - Parul Univ)' : 'PAID (₹300 - Other Univ)';
+      errorBox.classList.add("hidden");
+      submitBtn.disabled = true;
+      submitBtn.innerHTML = `<span>Checking Record...</span>`;
 
-      document.getElementById('regFormView').classList.add('hidden');
-      document.getElementById('regPassView').classList.remove('hidden');
-    }
+      try {
+        const response = await fetch(`${APPS_SCRIPT_URL}?query=${encodeURIComponent(query)}`);
+        const res = await response.json();
 
-    function resetRegistration() {
-      document.getElementById('regForm').reset();
-      updatePrice();
-      document.getElementById('regPassView').classList.add('hidden');
-      document.getElementById('regFormView').classList.remove('hidden');
-    }
-
-    // Mobile Navbar Toggle
-    function toggleMobileMenu() {
-      const menu = document.getElementById('mobileMenu');
-      menu.classList.toggle('hidden');
-    }
-    document.getElementById('mobileMenuBtn').addEventListener('click', toggleMobileMenu);
-
-    // FAQ Accordion Toggle
-    function toggleFaq(index) {
-      const content = document.getElementById(`faq-content-${index}`);
-      const icon = document.getElementById(`faq-icon-${index}`);
-      if (content.classList.contains('hidden')) {
-        content.classList.remove('hidden');
-        icon.classList.add('rotate-180');
-      } else {
-        content.classList.add('hidden');
-        icon.classList.remove('rotate-180');
-      }
-    }
-
-    // Quick Query Form
-    function handleQuickQuery() {
-      const input = document.getElementById('quickQueryInput');
-      const msg = document.getElementById('querySuccessMsg');
-      if (input.value.trim() !== '') {
-        msg.classList.remove('hidden');
-        input.value = '';
-        setTimeout(() => msg.classList.add('hidden'), 5000);
-      }
-    }
-
-    // Countdown Timer logic to 05 October 2026 09:00:00
-    const targetDate = new Date('October 05, 2026 09:00:00').getTime();
-
-    function updateCountdown() {
-      const now = new Date().getTime();
-      const distance = targetDate - now;
-
-      if (distance < 0) {
-        document.getElementById('daysCount').innerText = "00";
-        document.getElementById('hoursCount').innerText = "00";
-        document.getElementById('minutesCount').innerText = "00";
-        document.getElementById('secondsCount').innerText = "00";
-        return;
-      }
-
-      const days = Math.floor(distance / (1000 * 60 * 60 * 24));
-      const hours = Math.floor((distance % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
-      const minutes = Math.floor((distance % (1000 * 60 * 60)) / (1000 * 60));
-      const seconds = Math.floor((distance % (1000 * 60)) / 1000);
-
-      document.getElementById('daysCount').innerText = String(days).padStart(2, '0');
-      document.getElementById('hoursCount').innerText = String(hours).padStart(2, '0');
-      document.getElementById('minutesCount').innerText = String(minutes).padStart(2, '0');
-      document.getElementById('secondsCount').innerText = String(seconds).padStart(2, '0');
-    }
-
-    setInterval(updateCountdown, 1000);
-    updateCountdown();
-
-    // Close modals on escape key
-    window.addEventListener('keydown', (e) => {
-      if (e.key === 'Escape') {
-        closeEventModal();
-        closeRegistrationModal();
+        if (res.success && res.data) {
+          renderBadge(res.data);
+          searchView.classList.add("hidden");
+          passView.classList.remove("hidden");
+        } else {
+          errorBox.innerText = res.message || "Registration record not found.";
+          errorBox.classList.remove("hidden");
+        }
+      } catch (err) {
+        errorBox.innerText = "Error contacting database. Ensure the Web App URL is deployed with public access.";
+        errorBox.classList.remove("hidden");
+      } finally {
+        submitBtn.disabled = false;
+        submitBtn.innerHTML = `<span>Verify & Get Pass</span>`;
       }
     });
+
+    function renderBadge(data) {
+      document.getElementById("badgePassId").innerText = data.passId;
+      document.getElementById("badgeName").innerText = data.name;
+      document.getElementById("badgeStream").innerText = data.discipline;
+      document.getElementById("badgeCollege").innerText = data.college || "Parul University";
+      document.getElementById("badgeMorning").innerText = data.morningTrack;
+      document.getElementById("badgeAfternoon").innerText = data.afternoonTrack;
+      document.getElementById("badgeFee").innerText = data.feeStatus;
+
+      // Generate dynamic QR Code for on-spot campus gates
+      const qrEl = document.getElementById("qrcode");
+      qrEl.innerHTML = "";
+      new QRCode(qrEl, {
+        text: `ID:${data.passId}|NAME:${data.name}|TRACKS:${data.morningTrack},${data.afternoonTrack}`,
+        width: 48,
+        height: 48,
+        colorDark: "#000000",
+        colorLight: "#ffffff",
+        correctLevel: QRCode.CorrectLevel.M
+      });
+    }
+
+    function resetApp() {
+      document.getElementById("queryInput").value = "";
+      passView.classList.add("hidden");
+      searchView.classList.remove("hidden");
+    }
   </script>
 </body>
 </html>
